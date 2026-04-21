@@ -10,35 +10,34 @@
     <style>
         :root {
             --apple-bg: #f5f5f7;
-            --apple-card: rgba(255, 255, 255, 0.85);
             --accent: #007aff;
-            --pause-yellow: #ffcc00;
-            /* Jaune Apple Watch Ultra */
-            --error: #ff3b30;
             --watch-case: #121214;
-            /* Noir profond saphir */
             --watch-band: #2c2c2e;
-            /* Gris silicone Sport Band */
+            --pause: #ff9f0a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'SF Pro Display', -apple-system, sans-serif;
             background: radial-gradient(circle at top right, #e2e2ff, transparent), var(--apple-bg);
-            background-attachment: fixed;
-            margin: 0;
             padding: 15px;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
         .container {
+            width: 100%;
             max-width: 500px;
             margin: 0 auto;
             padding-bottom: 120px;
-            transition: max-width 0.3s ease;
         }
 
-        /* --- DESIGN MONTRE DÉPLIÉE ULTRA RÉALISTE & FIXÉE --- */
+        /* --- LA MONTRE RÉALISTE --- */
         .watch-banner {
             position: sticky;
             top: 10px;
@@ -46,259 +45,242 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 110px;
             width: 100%;
+            height: 120px;
             margin-bottom: 40px;
         }
 
-        /* Bracelet bombé et texturé 3D réaliste */
         .band-left,
         .band-right {
-            height: 65px;
+            height: 64px;
             background: var(--watch-band);
             flex: 1;
             position: relative;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            /* Dégradé pour effet silicone bombé */
-            background-image: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.08), transparent 70%);
             display: flex;
             align-items: center;
+            /* Ombre portée pour détacher le bracelet du fond */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            /* Dégradé de lumière pour l'effet bombé (Skeuomorphisme) */
+            background-image: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    transparent 40%,
+                    rgba(0, 0, 0, 0.2) 100%);
+            transition: all 0.3s ease;
+        }
+
+        /* Texture de points style "Apple Sport Band" */
+        .band-left::after,
+        .band-right::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1.2px, transparent 1.2px);
+            background-size: 10px 10px;
+            pointer-events: none;
         }
 
         .band-left {
             border-radius: 40px 0 0 40px;
             justify-content: center;
+            /* Petit reflet sur le bord gauche */
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .band-right {
             border-radius: 0 40px 40px 0;
-            justify-content: flex-end;
-            padding-right: 12px;
-            gap: 6px;
-            min-width: 140px;
+            justify-content: center;
+            gap: 8px;
+            /* Espace entre les boutons */
+            /* Petit reflet sur le bord droit */
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Effet texture bracelet sport 3D discret gravé */
-        .band-text {
-            color: rgba(255, 255, 255, 0.12);
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            pointer-events: none;
-        }
-
-        /* Boîtier Ultra Réaliste (Taille Mobile-First) */
         .watch-case {
-            width: 100px;
-            height: 100px;
-            border-radius: 30px;
+            width: 108px;
+            height: 108px;
+            border-radius: 32px;
             z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            flex-shrink: 0;
-            margin: 0 -5px;
-            /* Chevauchement réaliste */
+            background: #0a0a0b;
+            /* Noir profond OLED */
 
-            /* Fond verre profond + Reflet de lumière spéculaire (effet saphir) */
-            background:
-                linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 40%, transparent 60%, rgba(255, 255, 255, 0.05) 100%),
-                var(--watch-case);
-
-            /* Bords polis biseautés (aluminium) */
-            border: 2px solid #3a3a3c;
+            /* L'effet "Aluminium Poli" et "Verre Saphir" */
+            border: 1.5px solid #3a3a3c;
             box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.4),
-                /* Ombre portée */
-                inset 0 2px 3px rgba(255, 255, 255, 0.2),
-                /* Biseau lumineux haut */
-                inset 0 -2px 3px rgba(0, 0, 0, 0.4);
-            /* Biseau ombre bas */
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                /* Ombre portée sous la montre */
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                /* Reflet brillant sur le bord haut */
+                inset 0 -2px 4px rgba(0, 0, 0, 0.6);
+            /* Ombre sur le bord bas */
         }
 
-        /* Conteneur de centrage absolu pour le cadran */
+        /* Le reflet de lumière sur le verre */
+        .watch-case::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
+            border-radius: 32px;
+            pointer-events: none;
+        }
+
         .timer-wrapper {
             position: relative;
-            width: 84px;
-            height: 84px;
+            width: 88px;
+            height: 88px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Temps au CENTRE MORT DU CADRAN (FIX IPHONE) */
         #timer-display {
             color: white;
             font-size: 18px;
             font-weight: 800;
-            font-variant-numeric: tabular-nums;
-            z-index: 3;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            /* CENTRE MORT */
-            margin: 0;
-            padding: 0;
-            line-height: 1;
+            z-index: 5;
+            font-variant-numeric: tabular-nums;
         }
 
-        /* Cercle SVG lumineux */
         .progress-ring {
             transform: rotate(-90deg);
-            position: absolute;
-            filter: drop-shadow(0 0 3px rgba(0, 122, 255, 0.5));
+            width: 88px;
+            height: 88px;
         }
 
         .progress-ring__circle {
-            transition: stroke-dashoffset 0.3s linear;
+            transition: stroke-dashoffset 1s linear;
+            /* Animation fluide seconde par seconde */
             stroke-linecap: round;
         }
 
-        /* BOUTONS PHYSIQUES RÉALISTES */
         .btn-watch {
             border: none;
             color: white;
-            height: 38px;
-            padding: 0 14px;
-            border-radius: 19px;
+            height: 40px;
+            width: 75px;
+            border-radius: 20px;
             font-weight: 700;
             font-size: 11px;
-            cursor: pointer;
-            transition: 0.2s;
-            z-index: 5;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
 
             /* Dégradé métallique bombé */
-            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
 
-            /* Ombre portée et biseau lumineux */
+            /* Ombre et biseau pour le relief */
             box-shadow:
-                0 4px 6px rgba(0, 0, 0, 0.2),
-                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(0, 0, 0, 0.3);
         }
 
-        /* Couleur des boutons avec l'effet métallique */
+        /* Effet de pression quand on clique (s'enfonce de 1px) */
+        .btn-watch:active {
+            transform: translateY(1.5px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
         .btn-start {
             background-color: var(--accent);
-            min-width: 65px;
         }
 
         .btn-pause {
-            background-color: var(--pause-yellow);
-            color: #000;
-            min-width: 65px;
+            background-color: var(--pause);
         }
 
-        /* JAUNE AVEC TEXTE NOIR */
         .btn-reset {
             background-color: #3a3a3c;
-            /* Gris Digital Crown */
-            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
-            font-size: 10px;
         }
 
-        /* Effet de pression sur les boutons */
-        .btn-watch:active {
-            transform: translateY(1px);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-
-        /* --- CONTENU --- */
-        header {
-            margin-bottom: 25px;
-            padding-left: 5px;
-        }
-
+        /* --- CARTES --- */
         .ex-card {
-            background: var(--apple-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px);
+            border-radius: 30px;
             padding: 25px;
             margin-bottom: 20px;
+            border: 1px solid white;
         }
 
         .ex-title h3 {
-            margin: 0;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--accent);
-            cursor: pointer;
+            margin-bottom: 10px;
         }
 
         .perf-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
         }
 
         .perf-input {
             background: #f2f2f7;
-            border: 2px solid transparent;
-            padding: 15px;
-            border-radius: 14px;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
             text-align: center;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
+            width: 100%;
             outline: none;
-            transition: 0.2s;
-            font-family: inherit;
-        }
-
-        .perf-input:focus {
-            border-color: var(--accent);
-            background: white;
         }
 
         .btn-finish {
             position: fixed;
-            bottom: 30px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            width: calc(100% - 40px);
+            width: 90%;
             max-width: 500px;
             background: var(--accent);
             color: white;
             border: none;
             padding: 22px;
-            border-radius: 24px;
+            border-radius: 25px;
             font-weight: 700;
             font-size: 19px;
-            cursor: pointer;
-            box-shadow: 0 15px 35px rgba(0, 122, 255, 0.3);
         }
 
-        /* DENSIFICATION PC */
-        @media (min-width: 768px) {
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 88px;
+            height: 88px;
+            /* Effet néon OLED */
+            filter: drop-shadow(0 0 4px var(--accent));
+        }
+
+        @media (min-width: 850px) {
             .container {
-                max-width: 750px;
+                max-width: 800px;
             }
 
             .watch-banner {
-                height: 140px;
+                height: 160px;
             }
 
             .watch-case {
-                width: 130px;
-                height: 130px;
-                border-radius: 38px;
+                width: 140px;
+                height: 140px;
             }
 
-            .timer-wrapper {
-                width: 110px;
-                height: 110px;
-            }
-
+            .timer-wrapper,
             .progress-ring {
-                width: 110px;
-                height: 110px;
+                width: 120px;
+                height: 120px;
             }
 
             #timer-display {
@@ -307,34 +289,14 @@
 
             .band-left,
             .band-right {
-                height: 80px;
+                height: 85px;
             }
 
             .btn-watch {
-                height: 45px;
-                font-size: 13px;
-                border-radius: 22px;
+                width: 100px;
+                height: 50px;
+                font-size: 14px;
             }
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(15px);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 85%;
-            border-radius: 25px;
         }
     </style>
 </head>
@@ -343,160 +305,103 @@
 
     <div class="container">
         <div class="watch-banner">
-            <div class="band-left"><span class="band-text">Sport Band</span></div>
+            <div class="band-left">
+                <button class="btn-watch btn-reset" onclick="resetTimer()">Reset</button>
+            </div>
+
             <div class="watch-case">
                 <div class="timer-wrapper">
-                    <svg class="progress-ring" id="svg-ring" width="84" height="84">
-                        <circle id="bg-circle" stroke="rgba(255,255,255,0.08)" stroke-width="4" fill="transparent"
-                            r="38" cx="42" cy="42" />
-                        <circle id="timer-circle" class="progress-ring__circle" stroke="var(--accent)" stroke-width="4"
-                            fill="transparent" r="38" cx="42" cy="42" />
+                    <svg class="progress-ring" viewBox="0 0 80 80">
+                        <circle stroke="rgba(255,255,255,0.1)" stroke-width="4" fill="transparent" r="36" cx="40"
+                            cy="40" />
+                        <circle id="timer-circle" stroke="var(--accent)" stroke-width="4" fill="transparent" r="36"
+                            cx="40" cy="40" style="stroke-linecap: round;" />
                     </svg>
                     <div id="timer-display">01:30</div>
                 </div>
             </div>
+
             <div class="band-right">
-                <button class="btn-watch btn-reset" onclick="resetTimer()">Reset</button>
                 <button class="btn-watch btn-start" onclick="toggleTimer()" id="btn-timer">Start</button>
             </div>
         </div>
 
-        <header>
-            <span
-                style="color:var(--accent); font-weight:700; font-size:12px; letter-spacing:1.2px; text-transform: uppercase;">Lundi</span>
-            <h1 style="font-size:32px; font-weight:800; margin:0;">Pecs et Triceps</h1>
+        <header style="margin-bottom: 25px;">
+            <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase;">Lundi</p>
+            <h1 style="font-size:36px; font-weight:800;">Pecs et Triceps</h1>
         </header>
 
         <form id="workoutForm">
             <div class="ex-card">
-                <div class="ex-header" style="margin-bottom: 20px;">
-                    <div class="ex-title" onclick="openModal('dips.jpg')">
-                        <h3>Dips Pectoraux</h3>
-                        <p style="margin:5px 0 0; color:#86868b; font-size:14px;">4 séries • 8-12 reps</p>
-                    </div>
+                <div class="ex-title">
+                    <h3>Dips Pectoraux</h3>
+                    <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
                 </div>
-
                 <div class="perf-grid">
                     <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                    <input type="number" class="perf-input" name="ex1_reps" placeholder="Répétitions">
+                    <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
                 </div>
             </div>
             <form id="workoutForm">
                 <div class="ex-card">
-                    <div class="ex-header" style="margin-bottom: 20px;">
-                        <div class="ex-title" onclick="openModal('dips.jpg')">
-                            <h3>Dips Pectoraux</h3>
-                            <p style="margin:5px 0 0; color:#86868b; font-size:14px;">4 séries • 8-12 reps</p>
-                        </div>
+                    <div class="ex-title">
+                        <h3>Dips Pectoraux</h3>
+                        <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
                     </div>
-
                     <div class="perf-grid">
                         <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                        <input type="number" class="perf-input" name="ex1_reps" placeholder="Répétitions">
+                        <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
                     </div>
                 </div>
                 <form id="workoutForm">
                     <div class="ex-card">
-                        <div class="ex-header" style="margin-bottom: 20px;">
-                            <div class="ex-title" onclick="openModal('dips.jpg')">
-                                <h3>Dips Pectoraux</h3>
-                                <p style="margin:5px 0 0; color:#86868b; font-size:14px;">4 séries • 8-12 reps</p>
-                            </div>
+                        <div class="ex-title">
+                            <h3>Dips Pectoraux</h3>
+                            <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
                         </div>
-
                         <div class="perf-grid">
                             <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                            <input type="number" class="perf-input" name="ex1_reps" placeholder="Répétitions">
+                            <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
                         </div>
                     </div>
                     <form id="workoutForm">
                         <div class="ex-card">
-                            <div class="ex-header" style="margin-bottom: 20px;">
-                                <div class="ex-title" onclick="openModal('dips.jpg')">
-                                    <h3>Dips Pectoraux</h3>
-                                    <p style="margin:5px 0 0; color:#86868b; font-size:14px;">4 séries • 8-12 reps</p>
-                                </div>
+                            <div class="ex-title">
+                                <h3>Dips Pectoraux</h3>
+                                <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
                             </div>
-
                             <div class="perf-grid">
                                 <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                                <input type="number" class="perf-input" name="ex1_reps" placeholder="Répétitions">
+                                <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
                             </div>
                         </div>
-                        <button type="button" class="btn-finish" id="submitWorkout">Enregistrer la séance</button>
-                    </form>
+                        <form id="workoutForm">
+                            <div class="ex-card">
+                                <div class="ex-title">
+                                    <h3>Dips Pectoraux</h3>
+                                    <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
+                                </div>
+                                <div class="perf-grid">
+                                    <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
+                                    <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
+                                </div>
+                            </div>
+                            <button type="button" class="btn-finish">Enregistrer la séance</button>
+                        </form>
     </div>
 
-    <div id="myModal" class="modal" onclick="closeModal()"><img class="modal-content" id="imgModal"></div>
-
-    <script type="module">
-        // --- ADAPTATION DYNAMIQUE DU SVG (PC FIX) ---
-        const updateSVGParams = () => {
-            const isDesktop = window.innerWidth >= 768;
-            const r = isDesktop ? 50 : 38;
-            const c = isDesktop ? 55 : 42;
-            const ring = document.getElementById('svg-ring');
-            const bgC = document.getElementById('bg-circle');
-            const tmC = document.getElementById('timer-circle');
-            if (isDesktop) { ring.setAttribute('width', '110'); ring.setAttribute('height', '110'); }
-            else { ring.setAttribute('width', '84'); ring.setAttribute('height', '84'); }
-            [bgC, tmC].forEach(circle => { circle.setAttribute('r', r); circle.setAttribute('cx', c); circle.setAttribute('cy', c); });
-            return r * 2 * Math.PI;
-        };
-
-        let circumference = updateSVGParams();
-        window.addEventListener('resize', () => { circumference = updateSVGParams(); resetTimer(); });
-
-        // --- LOGIQUE TIMER ---
-        let secondsLeft = 90;
-        const TIME_LIMIT = 90;
-        let timerInterval = null;
+    <script>
         const circle = document.getElementById('timer-circle');
+        const r = 36;
+        const circumference = 2 * Math.PI * r;
 
-        // Initialisation du cercle BLEU COMPLET au départ
+        // Configuration initiale
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = 0;
+        circle.style.strokeDashoffset = 0; // Entièrement plein au départ
 
-        window.toggleTimer = function () {
-            const btn = document.getElementById('btn-timer');
-            if (timerInterval) {
-                // MODE PAUSE (Jaune)
-                clearInterval(timerInterval); timerInterval = null;
-                btn.innerText = "Start";
-                btn.className = "btn-watch btn-start";
-            } else {
-                // MODE START / RESUME (Bleu)
-                btn.innerText = "Pause";
-                btn.className = "btn-watch btn-pause";
-                timerInterval = setInterval(() => {
-                    secondsLeft--;
-                    if (secondsLeft <= 0) {
-                        clearInterval(timerInterval); secondsLeft = 0;
-                        document.getElementById('timer-display').textContent = "00:00";
-                        circle.style.strokeDashoffset = circumference; // Vide à la fin
-                        btn.innerText = "Fin";
-                        btn.style.background = "var(--error)";
-                    } else {
-                        updateDisplay();
-                        // Le bleu S'EFFACE : l'offset augmente de 0 à circumference
-                        const offset = circumference - ((secondsLeft / TIME_LIMIT) * circumference);
-                        circle.style.strokeDashoffset = offset;
-                    }
-                }, 1000);
-            }
-        }
-
-        window.resetTimer = function () {
-            clearInterval(timerInterval); timerInterval = null;
-            secondsLeft = TIME_LIMIT;
-            updateDisplay();
-            circle.style.strokeDasharray = `${circumference} ${circumference}`;
-            circle.style.strokeDashoffset = 0; // Remet le cercle BLEU COMPLET
-            const btn = document.getElementById('btn-timer');
-            btn.innerText = "Start";
-            btn.className = "btn-watch btn-start";
-            btn.style.background = "var(--accent)";
-        }
+        let TIME_LIMIT = 90;
+        let secondsLeft = TIME_LIMIT;
+        let timerInterval = null;
 
         function updateDisplay() {
             let m = Math.floor(secondsLeft / 60);
@@ -504,8 +409,50 @@
             document.getElementById('timer-display').textContent = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
         }
 
-        window.openModal = (src) => { document.getElementById('myModal').style.display = "flex"; document.getElementById('imgModal').src = src; }
-        window.closeModal = () => { document.getElementById('myModal').style.display = "none"; }
+        function setProgress() {
+            // Calcul de l'offset : quand secondsLeft diminue, l'offset augmente (le cercle se vide)
+            const fraction = (TIME_LIMIT - secondsLeft) / TIME_LIMIT;
+            const offset = fraction * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        window.toggleTimer = function () {
+            const btn = document.getElementById('btn-timer');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                btn.innerText = "Start";
+                btn.className = "btn-watch btn-start";
+            } else {
+                btn.innerText = "Pause";
+                btn.className = "btn-watch btn-pause";
+                timerInterval = setInterval(() => {
+                    secondsLeft--;
+                    updateDisplay();
+                    setProgress();
+
+                    if (secondsLeft <= 0) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        btn.innerText = "Fin";
+                        if (window.navigator.vibrate) window.navigator.vibrate([200, 100, 200]);
+                    }
+                }, 1000);
+            }
+        }
+
+        window.resetTimer = function () {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            secondsLeft = TIME_LIMIT;
+            updateDisplay();
+            circle.style.strokeDashoffset = 0; // Remplit le cercle
+            const btn = document.getElementById('btn-timer');
+            btn.innerText = "Start";
+            btn.className = "btn-watch btn-start";
+        }
+
+        // Init
         updateDisplay();
     </script>
 </body>
