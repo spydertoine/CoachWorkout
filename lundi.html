@@ -11,123 +11,82 @@
             --apple-card: rgba(255, 255, 255, 0.85);
             --accent: #007aff;
             --pause: #ff9f0a;
-            --error: #ff3b30;
-            --watch-case: #121214; /* Plus noir profond */
+            --watch-case: #121214;
             --watch-band: #2c2c2e;
         }
 
         body {
             font-family: 'SF Pro Display', -apple-system, sans-serif;
             background: radial-gradient(circle at top right, #e2e2ff, transparent), var(--apple-bg);
-            background-attachment: fixed; margin: 0; padding: 20px; -webkit-font-smoothing: antialiased;
+            background-attachment: fixed; margin: 0; padding: 15px; -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 650px; margin: 0 auto; padding-bottom: 140px; }
+        .container { max-width: 650px; margin: 0 auto; padding-bottom: 120px; }
 
-        /* --- DESIGN MONTRE DÉPLIÉE RÉALISTE --- */
+        /* --- BANNIÈRE MONTRE CORRIGÉE --- */
         .watch-banner {
-            position: sticky; top: 15px; z-index: 100;
+            position: sticky; top: 10px; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            height: 110px; width: 100%; margin-bottom: 50px;
+            width: 100%; height: 120px; margin-bottom: 40px;
         }
 
-        /* Le bracelet bombé et texturé */
         .band-left, .band-right {
-            height: 70px; background: var(--watch-band);
-            flex: 1; position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            /* Dégradé pour effet bombé */
+            height: 64px; background: var(--watch-band); flex: 1; position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             background-image: radial-gradient(circle at 50% 10%, rgba(255,255,255,0.08), transparent 70%);
         }
         
         .band-left { border-radius: 40px 0 0 40px; display: flex; align-items: center; padding-left: 20px; }
         .band-right { border-radius: 0 40px 40px 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; gap: 8px; }
 
-        /* Effet texture bracelet sport 3D */
-        .band-left::after, .band-right::before {
-            content: ""; position: absolute; top: 0; bottom: 0; width: 100%;
-            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 2px);
-            background-size: 9px 9px; pointer-events: none; opacity: 0.8;
-        }
-
-        /* Le Boîtier Ultra Réaliste */
+        /* Cadran avec positionnement relatif pour le texte */
         .watch-case {
-            width: 115px; height: 115px; 
-            border-radius: 34px; z-index: 2;
+            width: 105px; height: 105px; border-radius: 32px; z-index: 2;
             display: flex; align-items: center; justify-content: center;
-            position: relative;
-            
-            /* Fond verre profond + Reflet de lumière spéculaire (effet saphir) */
-            background: 
-                linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%),
-                var(--watch-case);
-            
-            /* Bords polis biseautés (aluminium) */
+            position: relative; flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%), var(--watch-case);
             border: 2px solid #3a3a3c;
-            box-shadow: 
-                0 20px 50px rgba(0,0,0,0.4), /* Ombre portée */
-                inset 0 2px 3px rgba(255,255,255,0.2), /* Biseau lumineux haut */
-                inset 0 -2px 3px rgba(0,0,0,0.4); /* Biseau ombre bas */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.1);
         }
 
-        .timer-content { position: relative; display: flex; align-items: center; justify-content: center; }
-
-        /* Cercle SVG lumineux */
-        .progress-ring { transform: rotate(-90deg); position: absolute; filter: drop-shadow(0 0 3px rgba(0,122,255,0.5)); }
+        /* Le cercle SVG */
+        .timer-visual { position: relative; width: 84px; height: 84px; display: flex; align-items: center; justify-content: center; }
+        .progress-ring { transform: rotate(-90deg); position: absolute; }
         .progress-ring__circle { transition: stroke-dashoffset 0.3s linear; stroke-linecap: round; }
 
-        /* Temps au centre */
+        /* TEXTE ENFIN BIEN CENTRÉ */
         #timer-display {
-            color: white; font-size: 19px; font-weight: 800;
-            font-variant-numeric: tabular-nums; z-index: 3;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            color: white; font-size: 18px; font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            position: absolute; /* Sorti du flux SVG pour un centrage parfait */
+            z-index: 5;
         }
 
-        /* BOUTONS PHYSIQUES RÉALISTES */
         .btn-watch {
-            border: none; color: white; height: 42px; padding: 0 16px;
-            border-radius: 21px; font-weight: 700; font-size: 13px;
-            cursor: pointer; transition: 0.2s; z-index: 5;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            
-            /* Dégradé métallique bombé */
+            border: none; color: white; height: 38px; padding: 0 14px;
+            border-radius: 19px; font-weight: 700; font-size: 11px;
+            text-transform: uppercase; cursor: pointer; transition: 0.2s;
             background-image: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
-            
-            /* Ombre portée et biseau lumineux */
-            box-shadow: 
-                0 4px 6px rgba(0,0,0,0.2), 
-                inset 0 1px 1px rgba(255,255,255,0.1);
-            border: 1px solid rgba(0,0,0,0.3);
         }
-        
-        /* Couleur des boutons avec l'effet métallique */
-        .btn-start { background-color: var(--accent); min-width: 75px; }
-        .btn-pause { background-color: var(--pause); min-width: 75px; }
-        .btn-reset { 
-            background-color: #3a3a3c; /* Gris Digital Crown */
-            background-image: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
-        }
+        .btn-start { background-color: var(--accent); width: 65px; }
+        .btn-pause { background-color: var(--pause); width: 65px; }
+        .btn-reset { background-color: #3a3a3c; }
 
-        /* Effet de pression sur les boutons */
-        .btn-watch:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 3px rgba(0,0,0,0.2), inset 0 1px 3px rgba(0,0,0,0.3);
-        }
+        /* --- STYLE DES CARTES --- */
+        .ex-card { background: var(--apple-card); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: 28px; border: 1px solid rgba(255,255,255,0.6); padding: 25px; margin-bottom: 20px; }
+        .ex-title h3 { margin: 0; font-size: 20px; font-weight: 800; color: var(--accent); cursor: pointer; }
+        .perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .perf-input { background: #f2f2f7; border: 2px solid transparent; padding: 15px; border-radius: 14px; text-align: center; font-size: 16px; font-weight: 700; outline: none; width: 100%; box-sizing: border-box; }
+        .btn-finish { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 30px); max-width: 610px; background: var(--accent); color: white; border: none; padding: 20px; border-radius: 22px; font-weight: 700; font-size: 18px; cursor: pointer; box-shadow: 0 12px 30px rgba(0,122,255,0.3); }
 
-        /* --- RESTE DU SITE --- */
-        header { margin-bottom: 35px; padding-left: 5px; }
-        .ex-card { background: var(--apple-card); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: 30px; border: 1px solid rgba(255,255,255,0.6); padding: 30px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
-        .ex-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
-        .ex-title h3 { margin: 0; font-size: 22px; font-weight: 800; color: var(--accent); cursor: pointer; text-decoration: underline rgba(0,122,255,0.15); }
-        .ex-title h3:hover { color: #006ae6; }
-        .info-badge { background: rgba(0,122,255,0.1); color: var(--accent); padding: 6px 14px; border-radius: 10px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .perf-input { background: #f2f2f7; border: 2px solid transparent; padding: 18px; border-radius: 16px; text-align: center; font-size: 18px; font-weight: 700; font-family: inherit; outline: none; transition: 0.2s; }
-        .perf-input:focus { border-color: var(--accent); background: white; box-shadow: 0 0 0 4px rgba(0,122,255,0.1); }
-        .btn-finish { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 610px; background: var(--accent); color: white; border: none; padding: 22px; border-radius: 24px; font-weight: 700; font-size: 19px; cursor: pointer; box-shadow: 0 15px 35px rgba(0,122,255,0.3); transition: 0.2s; }
-        .btn-finish:active { transform: translateX(-50%) scale(0.98); }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); align-items: center; justify-content: center; }
-        .modal-content { max-width: 95%; max-height: 85%; border-radius: 25px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        /* RESPONSIVE */
+        @media (max-width: 450px) {
+            .watch-case { width: 95px; height: 95px; border-radius: 28px; }
+            .timer-visual { width: 78px; height: 78px; }
+            .progress-ring { width: 78px; height: 78px; }
+            #timer-display { font-size: 16px; }
+            .band-left span { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -135,14 +94,14 @@
     <div class="container">
         <div class="watch-banner">
             <div class="band-left">
-                <span style="color: rgba(255,255,255,0.15); font-size: 10px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;">Sport Band</span>
+                <span style="color: rgba(255,255,255,0.15); font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Sport Band</span>
             </div>
             
             <div class="watch-case">
-                <div class="timer-content">
-                    <svg class="progress-ring" width="94" height="94">
-                        <circle stroke="rgba(255,255,255,0.08)" stroke-width="5" fill="transparent" r="42" cx="47" cy="47"/>
-                        <circle id="timer-circle" class="progress-ring__circle" stroke="var(--accent)" stroke-width="5" fill="transparent" r="42" cx="47" cy="47"/>
+                <div class="timer-visual">
+                    <svg class="progress-ring" width="84" height="84">
+                        <circle stroke="rgba(255,255,255,0.08)" stroke-width="4" fill="transparent" r="38" cx="42" cy="42"/>
+                        <circle id="timer-circle" class="progress-ring__circle" stroke="var(--accent)" stroke-width="4" fill="transparent" r="38" cx="42" cy="42"/>
                     </svg>
                     <div id="timer-display">01:30</div>
                 </div>
@@ -156,7 +115,7 @@
 
         <header>
             <span style="color:var(--apple-sub); font-weight:700; font-size:14px; letter-spacing:1.5px; text-transform: uppercase;">Lundi</span>
-            <h1 style="font-size:38px; font-weight:800; margin:5px 0; letter-spacing: -1.5px;">Pecs et Triceps</h1>
+            <h1 style="font-size:34px; font-weight:800; margin:5px 0; letter-spacing: -1.2px;">Pecs et Triceps</h1>
         </header>
 
         <form id="workoutForm">
@@ -164,48 +123,29 @@
                 <div class="ex-header">
                     <div class="ex-title" onclick="openModal('dips.jpg')">
                         <h3>Dips Pectoraux</h3>
-                        <p>4 séries de 8 à 12 répétitions</p>
+                        <p>4 séries • 8-12 reps</p>
                     </div>
-                    <div class="info-badge">1'30 repos</div>
                 </div>
                 <div class="perf-grid">
-                    <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids en kg">
+                    <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
                     <input type="number" class="perf-input" name="ex1_reps" placeholder="Répétitions">
                 </div>
             </div>
-
-            <div class="ex-card">
-                <div class="ex-header">
-                    <div class="ex-title" onclick="openModal('pompes.jpg')">
-                        <h3>Pompes lestées</h3>
-                        <p>3 séries au maximum</p>
-                    </div>
-                    <div class="info-badge">1' repos</div>
-                </div>
-                <div class="perf-grid">
-                    <input type="number" class="perf-input" name="ex2_poids" placeholder="Lest en kg">
-                    <input type="number" class="perf-input" name="ex2_reps" placeholder="Répétitions">
-                </div>
-            </div>
-
             <button type="button" class="btn-finish" id="submitWorkout">Enregistrer la séance</button>
         </form>
     </div>
-
-    <div id="myModal" class="modal" onclick="closeModal()"><img class="modal-content" id="imgModal"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Config Firebase
+        // Ta config Firebase...
         const firebaseConfig = { apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw", authDomain: "coachworkout-65b99.firebaseapp.com", projectId: "coachworkout-65b99", storageBucket: "coachworkout-65b99.firebasestorage.app", messagingSenderId: "78930491774", appId: "1:78930491774:web:d480943e82efa2db451b2f" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // --- LOGIQUE TIMER ---
         const circle = document.getElementById('timer-circle');
         const radius = circle.r.baseVal.value;
         const circumference = radius * 2 * Math.PI;
@@ -223,24 +163,15 @@
         window.toggleTimer = function() {
             const btn = document.getElementById('btn-timer');
             if (timerInterval) {
-                // PAUSE
-                clearInterval(timerInterval);
-                timerInterval = null;
-                btn.innerText = "Start";
-                btn.className = "btn-watch btn-start";
+                clearInterval(timerInterval); timerInterval = null;
+                btn.innerText = "Start"; btn.className = "btn-watch btn-start";
             } else {
-                // START
-                btn.innerText = "Pause";
-                btn.className = "btn-watch btn-pause";
+                btn.innerText = "Pause"; btn.className = "btn-watch btn-pause";
                 timerInterval = setInterval(() => {
                     secondsLeft--;
                     if (secondsLeft <= 0) {
-                        clearInterval(timerInterval);
-                        secondsLeft = 0;
-                        setProgress(100);
-                        updateDisplay();
+                        clearInterval(timerInterval); secondsLeft = 0; setProgress(100); updateDisplay();
                         btn.innerText = "Fin";
-                        btn.style.background = "var(--error)";
                     } else {
                         updateDisplay();
                         setProgress(((TIME_LIMIT - secondsLeft) / TIME_LIMIT) * 100);
@@ -251,12 +182,9 @@
 
         window.resetTimer = function() {
             clearInterval(timerInterval); timerInterval = null;
-            secondsLeft = TIME_LIMIT;
-            updateDisplay(); setProgress(0);
+            secondsLeft = TIME_LIMIT; updateDisplay(); setProgress(0);
             const btn = document.getElementById('btn-timer');
-            btn.innerText = "Start";
-            btn.className = "btn-watch btn-start";
-            btn.style.background = "var(--accent)";
+            btn.innerText = "Start"; btn.className = "btn-watch btn-start";
         }
 
         function updateDisplay() {
@@ -264,10 +192,6 @@
             let s = secondsLeft % 60;
             document.getElementById('timer-display').textContent = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
         }
-
-        updateDisplay();
-        window.openModal = (src) => { document.getElementById('myModal').style.display="flex"; document.getElementById('imgModal').src=src; }
-        window.closeModal = () => { document.getElementById('myModal').style.display="none"; }
     </script>
 </body>
 </html>
