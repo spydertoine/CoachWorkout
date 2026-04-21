@@ -38,20 +38,25 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.03);
         }
 
-        .stat-label { color: var(--apple-sub); font-size: 14px; font-weight: 600; margin-bottom: 10px; display: block; }
+        .stat-label { color: var(--apple-sub); font-size: 12px; font-weight: 700; margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
         .stat-value { font-size: 32px; font-weight: 800; color: #1d1d1f; }
         
-        /* Grille des Macros */
         .macro-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px; }
         .macro-item { text-align: center; padding: 15px; border-radius: 18px; background: rgba(255,255,255,0.4); }
         .macro-name { font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
         .macro-val { font-size: 20px; font-weight: 800; }
 
-        .input-poids {
-            width: 100%; border: none; background: rgba(0,0,0,0.05); padding: 18px;
-            border-radius: 16px; font-size: 24px; font-weight: 800; font-family: inherit;
-            margin-top: 10px; box-sizing: border-box; text-align: center; color: var(--accent);
+        /* Grille d'édition */
+        .edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; }
+        .input-group { margin-bottom: 15px; }
+        
+        .input-styled {
+            width: 100%; border: none; background: rgba(0,0,0,0.05); padding: 16px;
+            border-radius: 14px; font-size: 18px; font-weight: 700; font-family: inherit;
+            box-sizing: border-box; color: var(--accent); outline: none;
+            transition: 0.2s;
         }
+        .input-styled:focus { background: rgba(255,255,255,0.8); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
 
         .btn-sync {
             width: 100%; background: var(--accent); color: white; border: none;
@@ -71,13 +76,31 @@
         <a href="index.html" class="back-link">‹ Dashboard</a>
         
         <header>
-            <span class="welcome-label">Mes statistiques</span>
-            <h1>Suivi Santé</h1>
+            <span class="welcome-label">Profil & Santé</span>
+            <h1>Mon Suivi</h1>
         </header>
 
         <div class="stat-card">
-            <span class="stat-label">Modifier mon poids actuel (kg)</span>
-            <input type="number" id="poids-input" class="input-poids" step="0.1">
+            <div class="input-group">
+                <span class="stat-label">Prénom</span>
+                <input type="text" id="prenom-input" class="input-styled" placeholder="Ton prénom">
+            </div>
+
+            <div class="edit-grid">
+                <div>
+                    <span class="stat-label">Âge</span>
+                    <input type="number" id="age-input" class="input-styled" placeholder="Âge">
+                </div>
+                <div>
+                    <span class="stat-label">Taille (cm)</span>
+                    <input type="number" id="taille-input" class="input-styled" placeholder="Taille">
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+                <span class="stat-label">Poids actuel (kg)</span>
+                <input type="number" id="poids-input" class="input-styled" step="0.1" placeholder="Poids">
+            </div>
         </div>
 
         <div class="stat-card">
@@ -87,15 +110,12 @@
         </div>
 
         <div class="stat-card">
-            <span class="stat-label">Besoins Journaliers Estimés</span>
+            <span class="stat-label">Besoins Journaliers</span>
             <div id="cal-value" class="stat-value">-- <span style="font-size: 16px; color: var(--apple-sub);">kcal/jour</span></div>
-            <p id="cal-desc" style="font-size: 13px; color: var(--apple-sub); margin-top: 10px; line-height: 1.4;">
-                Basé sur ton métabolisme de base et ton niveau d'activité.
-            </p>
         </div>
 
         <div class="stat-card">
-            <span class="stat-label">Répartition des Macros (Objectif)</span>
+            <span class="stat-label">Objectifs Macros</span>
             <div class="macro-grid">
                 <div class="macro-item" style="color: var(--prot);">
                     <div class="macro-name">Protéines</div>
@@ -115,11 +135,10 @@
             </div>
         </div>
 
-        <button id="btn-update" class="btn-sync">Mettre à jour mes données Cloud</button>
+        <button id="btn-update" class="btn-sync">Mettre à jour mon profil</button>
         <p style="text-align: center; font-size: 12px; color: var(--apple-sub); margin-top: 15px;">
-            Dernière synchronisation : <span id="last-sync">--</span>
+            Synchronisation Cloud active • <span id="last-sync">--</span>
         </p>
-
     </div>
 
     <script type="module">
@@ -155,44 +174,60 @@
         });
 
         function updateUI() {
-            const P = parseFloat(userData.poids);
-            const T = parseFloat(userData.taille);
-            const A = parseInt(userData.age);
+            const P = parseFloat(userData.poids) || 0;
+            const T = parseFloat(userData.taille) || 0;
+            const A = parseInt(userData.age) || 0;
+            const Nom = userData.prenom || "";
+            
+            document.getElementById('prenom-input').value = Nom;
+            document.getElementById('age-input').value = A;
             document.getElementById('poids-input').value = P;
+            document.getElementById('taille-input').value = T;
 
-            // 1. IMC
-            const imc = (P / ((T/100) * (T/100))).toFixed(1);
-            document.getElementById('imc-value').innerText = imc;
-            const status = document.getElementById('imc-status');
-            if (imc < 18.5) { status.innerText = "Poids faible"; status.style.background = "#ff9f0a"; }
-            else if (imc < 25) { status.innerText = "Poids idéal"; status.style.background = "#34c759"; status.style.color = "white"; }
-            else { status.innerText = "Surpoids"; status.style.background = "#ff3b30"; status.style.color = "white"; }
+            // IMC
+            if (T > 0 && P > 0) {
+                const imc = (P / ((T/100) * (T/100))).toFixed(1);
+                document.getElementById('imc-value').innerText = imc;
+                const status = document.getElementById('imc-status');
+                if (imc < 18.5) { status.innerText = "Poids faible"; status.style.background = "#ff9f0a"; }
+                else if (imc < 25) { status.innerText = "Poids idéal"; status.style.background = "#34c759"; status.style.color = "white"; }
+                else { status.innerText = "Surpoids"; status.style.background = "#ff3b30"; status.style.color = "white"; }
 
-            // 2. Calories (Mifflin-St Jeor) - x1.375 pour activité légère
-            const bmr = (10 * P) + (6.25 * T) - (5 * A) + 5;
-            const tdee = Math.round(bmr * 1.375);
-            document.getElementById('cal-value').innerHTML = `${tdee} <span style="font-size: 16px; color: var(--apple-sub);">kcal/jour</span>`;
+                // Calories (Mifflin-St Jeor)
+                const bmr = (10 * P) + (6.25 * T) - (5 * A) + 5;
+                const tdee = Math.round(bmr * 1.375);
+                document.getElementById('cal-value').innerHTML = `${tdee} <span style="font-size: 16px; color: var(--apple-sub);">kcal/jour</span>`;
 
-            // 3. Macros (Répartition 30% P / 45% G / 25% L)
-            document.getElementById('m-prot').innerText = Math.round((tdee * 0.30) / 4);
-            document.getElementById('m-glu').innerText = Math.round((tdee * 0.45) / 4);
-            document.getElementById('m-lip').innerText = Math.round((tdee * 0.25) / 9);
+                // Macros
+                document.getElementById('m-prot').innerText = Math.round((tdee * 0.30) / 4);
+                document.getElementById('m-glu').innerText = Math.round((tdee * 0.45) / 4);
+                document.getElementById('m-lip').innerText = Math.round((tdee * 0.25) / 9);
+            }
 
             document.getElementById('last-sync').innerText = new Date().toLocaleTimeString();
         }
 
         document.getElementById('btn-update').onclick = async () => {
-            const nouveauPoids = document.getElementById('poids-input').value;
             const btn = document.getElementById('btn-update');
-            btn.innerText = "Mise à jour Cloud...";
+            const updatedData = {
+                prenom: document.getElementById('prenom-input').value,
+                age: document.getElementById('age-input').value,
+                poids: document.getElementById('poids-input').value,
+                taille: document.getElementById('taille-input').value
+            };
+
+            btn.innerText = "Synchronisation...";
             btn.disabled = true;
 
             try {
-                await updateDoc(doc(db, "users", currentUser.uid), { poids: nouveauPoids });
-                userData.poids = nouveauPoids;
+                await updateDoc(doc(db, "users", currentUser.uid), updatedData);
+                
+                // Mise à jour de la mémoire locale pour l'affichage immédiat
+                Object.assign(userData, updatedData);
                 updateUI();
-                btn.innerText = "Synchronisé !";
-                setTimeout(() => { btn.disabled = false; btn.innerText = "Mettre à jour mes données Cloud"; }, 2000);
+                
+                btn.innerText = "Profil à jour !";
+                setTimeout(() => { btn.disabled = false; btn.innerText = "Mettre à jour mon profil"; }, 2000);
             } catch (e) {
                 alert("Erreur : " + e.message);
                 btn.disabled = false;
