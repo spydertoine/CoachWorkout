@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Connexion | Workout Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --apple-bg: #f5f5f7;
+            --accent: #007aff;
+            --error: #ff3b30;
+            --apple-card: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            background: radial-gradient(circle at top right, #e2e2ff, transparent),
+                radial-gradient(circle at bottom left, #ffe2e2, transparent),
+                var(--apple-bg);
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .login-card {
+            background: var(--apple-card);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        .subtitle {
+            color: #86868b;
+            font-size: 15px;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input:focus {
+            background: white;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        #togglePassword {
+            position: absolute;
+            right: 15px;
+            top: 28px;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            user-select: none;
+            z-index: 10;
+        }
+
+        #msg-error {
+            color: var(--error);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .btn:disabled {
+            background: #d2d2d7;
+            cursor: not-allowed;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
+        .toggle-link {
+            margin-top: 25px;
+            display: block;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        #confirm-group {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <h1 id="form-title">Bienvenue</h1>
+        <span class="subtitle" id="form-subtitle">Connectez-vous pour continuer</span>
+
+        <div id="msg-error">Les mots de passe ne correspondent pas</div>
+
+        <form id="authForm">
+            <div class="input-group">
+                <input type="email" id="email" placeholder="E-mail" required>
+            </div>
+
+            <div class="input-group">
+                <span id="togglePassword">Afficher</span>
+                <input type="password" id="password" placeholder="Mot de passe" required>
+            </div>
+
+            <div class="input-group" id="confirm-group">
+                <input type="password" id="password-confirm" placeholder="Confirmer le mot de passe">
+            </div>
+
+            <button type="submit" class="btn" id="btn-text">Se connecter</button>
+        </form>
+
+        <span class="toggle-link" id="toggleMode">Pas de compte ? Créer un profil</span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw",
+            authDomain: "coachworkout-65b99.firebaseapp.com",
+            projectId: "coachworkout-65b99",
+            storageBucket: "coachworkout-65b99.firebasestorage.app",
+            messagingSenderId: "78930491774",
+            appId: "1:78930491774:web:d480943e82efa2db451b2f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let isLogin = true;
+        const pass = document.getElementById('password');
+        const confirmPass = document.getElementById('password-confirm');
+        const errorMsg = document.getElementById('msg-error');
+        const submitBtn = document.getElementById('btn-text');
+        const toggleBtn = document.getElementById('togglePassword');
+
+        // Vérification concordance
+        function checkPasswords() {
+            if (!isLogin) {
+                if (confirmPass.value !== "" && pass.value !== confirmPass.value) {
+                    errorMsg.style.display = "block";
+                    submitBtn.disabled = true;
+                } else {
+                    errorMsg.style.display = "none";
+                    submitBtn.disabled = false;
+                }
+            }
+        }
+
+        pass.oninput = checkPasswords;
+        confirmPass.oninput = checkPasswords;
+
+        // Toggle visibilité unique pour les deux champs
+        toggleBtn.onclick = () => {
+            const isPassword = pass.getAttribute('type') === 'password';
+            const newType = isPassword ? 'text' : 'password';
+
+            pass.setAttribute('type', newType);
+            confirmPass.setAttribute('type', newType);
+            toggleBtn.innerText = isPassword ? 'Masquer' : 'Afficher';
+        };
+
+        document.getElementById('toggleMode').onclick = () => {
+            isLogin = !isLogin;
+            document.getElementById('form-title').innerText = isLogin ? "Bienvenue" : "Nouveau Profil";
+            document.getElementById('form-subtitle').innerText = isLogin ? "Connectez-vous pour continuer" : "Commencez votre aventure";
+            submitBtn.innerText = isLogin ? "Se connecter" : "Créer mon compte";
+            document.getElementById('toggleMode').innerText = isLogin ? "Pas de compte ? Créer un profil" : "Déjà inscrit ? Se connecter";
+
+            document.getElementById('confirm-group').style.display = isLogin ? "none" : "block";
+            confirmPass.required = !isLogin;
+
+            // Réinitialisation visibilité en changeant de mode
+            pass.setAttribute('type', 'password');
+            confirmPass.setAttribute('type', 'password');
+            toggleBtn.innerText = 'Afficher';
+
+            checkPasswords();
+        };
+
+        document.getElementById('authForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = pass.value;
+
+            submitBtn.innerText = "Chargement...";
+            submitBtn.disabled = true;
+
+            try {
+                if (isLogin) {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    const docSnap = await getDoc(doc(db, "users", userCredential.user.uid));
+                    if (docSnap.exists()) {
+                        localStorage.setItem('userProfile', JSON.stringify(docSnap.data()));
+                        window.location.href = "index.html";
+                    } else { window.location.href = "formulaire.html"; }
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    window.location.href = "formulaire.html";
+                }
+            } catch (error) {
+                alert("Erreur: " + error.message);
+                submitBtn.innerText = isLogin ? "Se connecter" : "Créer mon compte";
+                submitBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+
+</html>
