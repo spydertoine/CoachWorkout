@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lundi | Workout Studio</title>
+    <title>Lundi | Workout</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --apple-bg: #f5f5f7;
-            --apple-card: rgba(255, 255, 255, 0.85);
             --accent: #007aff;
-            --pause: #ff9f0a;
             --watch-case: #121214;
             --watch-band: #2c2c2e;
         }
@@ -18,90 +16,84 @@
         body {
             font-family: 'SF Pro Display', -apple-system, sans-serif;
             background: radial-gradient(circle at top right, #e2e2ff, transparent), var(--apple-bg);
-            background-attachment: fixed; margin: 0; padding: 15px; -webkit-font-smoothing: antialiased;
+            margin: 0; padding: 15px; -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; /* Empêche le scroll horizontal du bracelet */
         }
 
-        .container { max-width: 650px; margin: 0 auto; padding-bottom: 120px; }
+        .container { max-width: 500px; margin: 0 auto; padding-bottom: 120px; }
 
-        /* --- BANNIÈRE MONTRE CORRIGÉE --- */
+        /* --- LA MONTRE : FIX RÉALISTE --- */
         .watch-banner {
             position: sticky; top: 10px; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            width: 100%; height: 120px; margin-bottom: 40px;
+            width: 100%; height: 110px; margin-bottom: 40px;
         }
 
+        /* Bracelets ajustables pour ne pas déborder */
         .band-left, .band-right {
-            height: 64px; background: var(--watch-band); flex: 1; position: relative;
+            height: 60px; background: var(--watch-band); flex: 1; position: relative;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             background-image: radial-gradient(circle at 50% 10%, rgba(255,255,255,0.08), transparent 70%);
         }
-        
-        .band-left { border-radius: 40px 0 0 40px; display: flex; align-items: center; padding-left: 20px; }
-        .band-right { border-radius: 0 40px 40px 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; gap: 8px; }
+        .band-left { border-radius: 40px 0 0 40px; min-width: 40px; }
+        .band-right { border-radius: 0 40px 40px 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; gap: 5px; min-width: 130px; }
 
-        /* Cadran avec positionnement relatif pour le texte */
+        /* BOITIER : Verrouillage total du format */
         .watch-case {
-            width: 105px; height: 105px; border-radius: 32px; z-index: 2;
+            width: 100px; height: 100px; border-radius: 30px; z-index: 2;
             display: flex; align-items: center; justify-content: center;
-            position: relative; flex-shrink: 0;
+            position: relative; flex-shrink: 0; margin: 0 -5px; /* Chevauchement léger pour le réalisme */
             background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%), var(--watch-case);
             border: 2px solid #3a3a3c;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.1);
         }
 
-        /* Le cercle SVG */
-        .timer-visual { position: relative; width: 84px; height: 84px; display: flex; align-items: center; justify-content: center; }
-        .progress-ring { transform: rotate(-90deg); position: absolute; }
-        .progress-ring__circle { transition: stroke-dashoffset 0.3s linear; stroke-linecap: round; }
+        /* Centrage absolu du texte et du cercle */
+        .timer-wrapper {
+            position: relative; width: 80px; height: 80px;
+            display: flex; align-items: center; justify-content: center;
+        }
 
-        /* TEXTE ENFIN BIEN CENTRÉ */
         #timer-display {
             color: white; font-size: 18px; font-weight: 800;
             font-variant-numeric: tabular-nums;
-            position: absolute; /* Sorti du flux SVG pour un centrage parfait */
-            z-index: 5;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); /* CENTRE MORT */
+            margin: 0; padding: 0; line-height: 1;
         }
 
+        .progress-ring { transform: rotate(-90deg); }
+        .progress-ring__circle { transition: stroke-dashoffset 0.3s linear; stroke-linecap: round; }
+
+        /* BOUTONS PLUS COMPACTS POUR IPHONE */
         .btn-watch {
-            border: none; color: white; height: 38px; padding: 0 14px;
-            border-radius: 19px; font-weight: 700; font-size: 11px;
-            text-transform: uppercase; cursor: pointer; transition: 0.2s;
-            background-image: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+            border: none; color: white; height: 36px; padding: 0 10px;
+            border-radius: 18px; font-weight: 700; font-size: 10px;
+            text-transform: uppercase; cursor: pointer;
         }
-        .btn-start { background-color: var(--accent); width: 65px; }
-        .btn-pause { background-color: var(--pause); width: 65px; }
-        .btn-reset { background-color: #3a3a3c; }
+        .btn-start { background-color: var(--accent); width: 60px; }
+        .btn-reset { background-color: #3a3a3c; font-size: 9px; }
 
-        /* --- STYLE DES CARTES --- */
-        .ex-card { background: var(--apple-card); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: 28px; border: 1px solid rgba(255,255,255,0.6); padding: 25px; margin-bottom: 20px; }
+        /* --- CARTES --- */
+        .ex-card { background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); border-radius: 28px; padding: 25px; margin-bottom: 20px; border: 1px solid white; }
         .ex-title h3 { margin: 0; font-size: 20px; font-weight: 800; color: var(--accent); cursor: pointer; }
         .perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .perf-input { background: #f2f2f7; border: 2px solid transparent; padding: 15px; border-radius: 14px; text-align: center; font-size: 16px; font-weight: 700; outline: none; width: 100%; box-sizing: border-box; }
-        .btn-finish { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 30px); max-width: 610px; background: var(--accent); color: white; border: none; padding: 20px; border-radius: 22px; font-weight: 700; font-size: 18px; cursor: pointer; box-shadow: 0 12px 30px rgba(0,122,255,0.3); }
-
-        /* RESPONSIVE */
-        @media (max-width: 450px) {
-            .watch-case { width: 95px; height: 95px; border-radius: 28px; }
-            .timer-visual { width: 78px; height: 78px; }
-            .progress-ring { width: 78px; height: 78px; }
-            #timer-display { font-size: 16px; }
-            .band-left span { display: none; }
-        }
+        .perf-input { background: #f2f2f7; border: none; padding: 16px; border-radius: 14px; text-align: center; font-size: 16px; font-weight: 700; font-family: inherit; }
+        
+        .btn-finish { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 500px; background: var(--accent); color: white; border: none; padding: 20px; border-radius: 22px; font-weight: 700; font-size: 18px; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="watch-banner">
-            <div class="band-left">
-                <span style="color: rgba(255,255,255,0.15); font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Sport Band</span>
-            </div>
+            <div class="band-left"></div>
             
             <div class="watch-case">
-                <div class="timer-visual">
-                    <svg class="progress-ring" width="84" height="84">
-                        <circle stroke="rgba(255,255,255,0.08)" stroke-width="4" fill="transparent" r="38" cx="42" cy="42"/>
-                        <circle id="timer-circle" class="progress-ring__circle" stroke="var(--accent)" stroke-width="4" fill="transparent" r="38" cx="42" cy="42"/>
+                <div class="timer-wrapper">
+                    <svg class="progress-ring" width="80" height="80">
+                        <circle stroke="rgba(255,255,255,0.1)" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+                        <circle id="timer-circle" class="progress-ring__circle" stroke="var(--accent)" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
                     </svg>
                     <div id="timer-display">01:30</div>
                 </div>
@@ -113,18 +105,16 @@
             </div>
         </div>
 
-        <header>
-            <span style="color:var(--apple-sub); font-weight:700; font-size:14px; letter-spacing:1.5px; text-transform: uppercase;">Lundi</span>
-            <h1 style="font-size:34px; font-weight:800; margin:5px 0; letter-spacing: -1.2px;">Pecs et Triceps</h1>
+        <header style="margin-bottom: 20px;">
+            <span style="font-weight:700; font-size:12px; color:var(--watch-band); text-transform: uppercase; letter-spacing: 1px;">Lundi</span>
+            <h1 style="font-size:32px; font-weight:800; margin:0;">Pecs et Triceps</h1>
         </header>
 
         <form id="workoutForm">
             <div class="ex-card">
-                <div class="ex-header">
-                    <div class="ex-title" onclick="openModal('dips.jpg')">
-                        <h3>Dips Pectoraux</h3>
-                        <p>4 séries • 8-12 reps</p>
-                    </div>
+                <div class="ex-title" onclick="openModal('dips.jpg')">
+                    <h3>Dips Pectoraux</h3>
+                    <p style="margin:5px 0 15px; color:#86868b; font-size:14px;">4 séries • 8-12 reps</p>
                 </div>
                 <div class="perf-grid">
                     <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
@@ -136,45 +126,29 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        // Ta config Firebase...
-        const firebaseConfig = { apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw", authDomain: "coachworkout-65b99.firebaseapp.com", projectId: "coachworkout-65b99", storageBucket: "coachworkout-65b99.firebasestorage.app", messagingSenderId: "78930491774", appId: "1:78930491774:web:d480943e82efa2db451b2f" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
+        // --- LOGIQUE IDENTIQUE ---
         const circle = document.getElementById('timer-circle');
-        const radius = circle.r.baseVal.value;
-        const circumference = radius * 2 * Math.PI;
+        const circumference = 36 * 2 * Math.PI;
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
         
-        const TIME_LIMIT = 90; 
-        let secondsLeft = TIME_LIMIT;
+        let secondsLeft = 90;
         let timerInterval = null;
-
-        function setProgress(percent) {
-            const offset = (percent / 100 * circumference);
-            circle.style.strokeDashoffset = offset;
-        }
 
         window.toggleTimer = function() {
             const btn = document.getElementById('btn-timer');
             if (timerInterval) {
                 clearInterval(timerInterval); timerInterval = null;
-                btn.innerText = "Start"; btn.className = "btn-watch btn-start";
+                btn.innerText = "Start";
             } else {
-                btn.innerText = "Pause"; btn.className = "btn-watch btn-pause";
+                btn.innerText = "Pause";
                 timerInterval = setInterval(() => {
                     secondsLeft--;
                     if (secondsLeft <= 0) {
-                        clearInterval(timerInterval); secondsLeft = 0; setProgress(100); updateDisplay();
-                        btn.innerText = "Fin";
+                        clearInterval(timerInterval); secondsLeft = 0; updateDisplay();
                     } else {
                         updateDisplay();
-                        setProgress(((TIME_LIMIT - secondsLeft) / TIME_LIMIT) * 100);
+                        const offset = circumference - (((90 - secondsLeft) / 90) * circumference);
+                        circle.style.strokeDashoffset = offset;
                     }
                 }, 1000);
             }
@@ -182,9 +156,8 @@
 
         window.resetTimer = function() {
             clearInterval(timerInterval); timerInterval = null;
-            secondsLeft = TIME_LIMIT; updateDisplay(); setProgress(0);
-            const btn = document.getElementById('btn-timer');
-            btn.innerText = "Start"; btn.className = "btn-watch btn-start";
+            secondsLeft = 90; updateDisplay(); circle.style.strokeDashoffset = 0;
+            document.getElementById('btn-timer').innerText = "Start";
         }
 
         function updateDisplay() {
@@ -192,6 +165,7 @@
             let s = secondsLeft % 60;
             document.getElementById('timer-display').textContent = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
         }
+        updateDisplay();
     </script>
 </body>
 </html>
