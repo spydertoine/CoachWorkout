@@ -7,11 +7,15 @@
     <title>Lundi | Workout Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap"
         rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@1,700;1,900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --apple-bg: #f5f5f7;
+            --apple-card: rgba(255, 255, 255, 0.85);
             --accent: #007aff;
-            --watch-case: #121214;
+            --watch-case: #0a0a0b;
             --watch-band: #2c2c2e;
             --pause: #ff9f0a;
         }
@@ -25,6 +29,7 @@
         body {
             font-family: 'SF Pro Display', -apple-system, sans-serif;
             background: radial-gradient(circle at top right, #e2e2ff, transparent), var(--apple-bg);
+            background-attachment: fixed;
             padding: 15px;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
@@ -37,7 +42,7 @@
             padding-bottom: 120px;
         }
 
-        /* --- LA MONTRE RÉALISTE --- */
+        /* --- LA MONTRE RÉALISTE (TON DESIGN PRÉFÉRÉ) --- */
         .watch-banner {
             position: sticky;
             top: 10px;
@@ -46,29 +51,35 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            height: 120px;
+            height: 130px;
             margin-bottom: 40px;
         }
 
         .band-left,
         .band-right {
-            height: 64px;
+            height: 68px;
             background: var(--watch-band);
             flex: 1;
             position: relative;
             display: flex;
             align-items: center;
-            /* Ombre portée pour détacher le bracelet du fond */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            /* Dégradé de lumière pour l'effet bombé (Skeuomorphisme) */
-            background-image: linear-gradient(to bottom,
-                    rgba(255, 255, 255, 0.1) 0%,
-                    transparent 40%,
-                    rgba(0, 0, 0, 0.2) 100%);
-            transition: all 0.3s ease;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to bottom, #3a3a3c 0%, #2c2c2e 50%, #1c1c1e 100%);
         }
 
-        /* Texture de points style "Apple Sport Band" */
+        .band-left {
+            border-radius: 40px 0 0 40px;
+            justify-content: center;
+            border-right: 1px solid #1c1c1e;
+        }
+
+        .band-right {
+            border-radius: 0 40px 40px 0;
+            justify-content: center;
+            border-left: 1px solid #1c1c1e;
+            gap: 8px;
+        }
+
         .band-left::after,
         .band-right::before {
             content: "";
@@ -82,46 +93,24 @@
             pointer-events: none;
         }
 
-        .band-left {
-            border-radius: 40px 0 0 40px;
-            justify-content: center;
-            /* Petit reflet sur le bord gauche */
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .band-right {
-            border-radius: 0 40px 40px 0;
-            justify-content: center;
-            gap: 8px;
-            /* Espace entre les boutons */
-            /* Petit reflet sur le bord droit */
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
         .watch-case {
-            width: 108px;
-            height: 108px;
-            border-radius: 32px;
+            width: 112px;
+            height: 112px;
+            border-radius: 34px;
             z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            background: #0a0a0b;
-            /* Noir profond OLED */
-
-            /* L'effet "Aluminium Poli" et "Verre Saphir" */
+            background: var(--watch-case);
             border: 1.5px solid #3a3a3c;
             box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.5),
-                /* Ombre portée sous la montre */
+                0 25px 50px rgba(0, 0, 0, 0.5),
                 inset 0 2px 4px rgba(255, 255, 255, 0.2),
-                /* Reflet brillant sur le bord haut */
                 inset 0 -2px 4px rgba(0, 0, 0, 0.6);
-            /* Ombre sur le bord bas */
+            overflow: hidden;
         }
 
-        /* Le reflet de lumière sur le verre */
         .watch-case::before {
             content: "";
             position: absolute;
@@ -129,15 +118,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
-            border-radius: 32px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
             pointer-events: none;
+            z-index: 4;
         }
 
         .timer-wrapper {
             position: relative;
-            width: 88px;
-            height: 88px;
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -145,80 +134,84 @@
 
         #timer-display {
             color: white;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 800;
             position: absolute;
             z-index: 5;
             font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
         }
 
         .progress-ring {
             transform: rotate(-90deg);
-            width: 88px;
-            height: 88px;
+            width: 90px;
+            height: 90px;
+            filter: drop-shadow(0 0 4px var(--accent));
         }
 
         .progress-ring__circle {
             transition: stroke-dashoffset 1s linear;
-            /* Animation fluide seconde par seconde */
             stroke-linecap: round;
         }
 
         .btn-watch {
             border: none;
             color: white;
-            height: 40px;
+            height: 42px;
             width: 75px;
-            border-radius: 20px;
+            border-radius: 21px;
             font-weight: 700;
             font-size: 11px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.2s ease;
-
-            /* Dégradé métallique bombé */
-            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
-
-            /* Ombre et biseau pour le relief */
-            box-shadow:
-                0 4px 8px rgba(0, 0, 0, 0.3),
-                inset 0 1px 1px rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to bottom, #4a4a4c 0%, #2c2c2e 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.4);
         }
 
-        /* Effet de pression quand on clique (s'enfonce de 1px) */
         .btn-watch:active {
             transform: translateY(1.5px);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.4);
         }
 
         .btn-start {
-            background-color: var(--accent);
+            background: linear-gradient(to bottom, #008aff 0%, #005bb5 100%);
         }
 
         .btn-pause {
-            background-color: var(--pause);
+            background: linear-gradient(to bottom, #ffb347 0%, #ff8c00 100%);
         }
 
-        .btn-reset {
-            background-color: #3a3a3c;
-        }
-
-        /* --- CARTES --- */
+        /* --- CARTES EXERCICES 3D (HARMONIE AVEC L'INDEX) --- */
         .ex-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(30px);
+            background: var(--apple-card);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-radius: 30px;
             padding: 25px;
-            margin-bottom: 20px;
-            border: 1px solid white;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            /* Effet bombé identique à l'index */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.02);
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%, rgba(0, 0, 0, 0.02) 100%);
         }
 
         .ex-title h3 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--accent);
-            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+        }
+
+        .ex-title p {
+            color: #86868b;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 20px;
         }
 
         .perf-grid {
@@ -229,7 +222,7 @@
 
         .perf-input {
             background: #f2f2f7;
-            border: none;
+            border: 2px solid transparent;
             padding: 18px;
             border-radius: 16px;
             text-align: center;
@@ -237,6 +230,13 @@
             font-weight: 700;
             width: 100%;
             outline: none;
+            transition: 0.2s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .perf-input:focus {
+            background: white;
+            border-color: var(--accent);
         }
 
         .btn-finish {
@@ -246,35 +246,27 @@
             transform: translateX(-50%);
             width: 90%;
             max-width: 500px;
-            background: var(--accent);
+            background: linear-gradient(to bottom, #008aff, #005bb5);
             color: white;
             border: none;
             padding: 22px;
             border-radius: 25px;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 19px;
+            box-shadow: 0 15px 35px rgba(0, 122, 255, 0.3);
+            cursor: pointer;
         }
 
-        .progress-ring {
-            transform: rotate(-90deg);
-            width: 88px;
-            height: 88px;
-            /* Effet néon OLED */
-            filter: drop-shadow(0 0 4px var(--accent));
-        }
-
+        /* --- RESPONSIVE GRANDS ÉCRANS --- */
         @media (min-width: 850px) {
             .container {
                 max-width: 800px;
             }
 
-            .watch-banner {
-                height: 160px;
-            }
-
             .watch-case {
                 width: 140px;
                 height: 140px;
+                border-radius: 42px;
             }
 
             .timer-wrapper,
@@ -297,6 +289,10 @@
                 height: 50px;
                 font-size: 14px;
             }
+
+            .ex-card {
+                padding: 40px;
+            }
         }
     </style>
 </head>
@@ -312,7 +308,7 @@
             <div class="watch-case">
                 <div class="timer-wrapper">
                     <svg class="progress-ring" viewBox="0 0 80 80">
-                        <circle stroke="rgba(255,255,255,0.1)" stroke-width="4" fill="transparent" r="36" cx="40"
+                        <circle stroke="rgba(255,255,255,0.05)" stroke-width="4" fill="transparent" r="36" cx="40"
                             cy="40" />
                         <circle id="timer-circle" stroke="var(--accent)" stroke-width="4" fill="transparent" r="36"
                             cx="40" cy="40" style="stroke-linecap: round;" />
@@ -326,68 +322,37 @@
             </div>
         </div>
 
-        <header style="margin-bottom: 25px;">
-            <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase;">Lundi</p>
-            <h1 style="font-size:36px; font-weight:800;">Pecs et Triceps</h1>
+        <header style="margin-bottom: 25px; padding-left: 5px;">
+            <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase; letter-spacing: 1px;">
+                Lundi</p>
+            <h1 style="font-size:36px; font-weight:800; letter-spacing: -1.5px;">Pecs et Triceps</h1>
         </header>
 
         <form id="workoutForm">
             <div class="ex-card">
                 <div class="ex-title">
                     <h3>Dips Pectoraux</h3>
-                    <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
+                    <p>4 séries • 8-12 reps</p>
                 </div>
                 <div class="perf-grid">
                     <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
                     <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
                 </div>
             </div>
-            <form id="workoutForm">
-                <div class="ex-card">
-                    <div class="ex-title">
-                        <h3>Dips Pectoraux</h3>
-                        <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
-                    </div>
-                    <div class="perf-grid">
-                        <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                        <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
-                    </div>
+
+            <div class="ex-card">
+                <div class="ex-title">
+                    <h3>Développé Couché</h3>
+                    <p>4 séries • 10 reps</p>
                 </div>
-                <form id="workoutForm">
-                    <div class="ex-card">
-                        <div class="ex-title">
-                            <h3>Dips Pectoraux</h3>
-                            <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
-                        </div>
-                        <div class="perf-grid">
-                            <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                            <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
-                        </div>
-                    </div>
-                    <form id="workoutForm">
-                        <div class="ex-card">
-                            <div class="ex-title">
-                                <h3>Dips Pectoraux</h3>
-                                <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
-                            </div>
-                            <div class="perf-grid">
-                                <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                                <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
-                            </div>
-                        </div>
-                        <form id="workoutForm">
-                            <div class="ex-card">
-                                <div class="ex-title">
-                                    <h3>Dips Pectoraux</h3>
-                                    <p style="color:#86868b; font-size:15px;">4 séries • 8-12 reps</p>
-                                </div>
-                                <div class="perf-grid">
-                                    <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                                    <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
-                                </div>
-                            </div>
-                            <button type="button" class="btn-finish">Enregistrer la séance</button>
-                        </form>
+                <div class="perf-grid">
+                    <input type="number" class="perf-input" name="ex2_poids" placeholder="Poids (kg)">
+                    <input type="number" class="perf-input" name="ex2_reps" placeholder="Reps">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-finish">Enregistrer la séance</button>
+        </form>
     </div>
 
     <script>
@@ -395,9 +360,8 @@
         const r = 36;
         const circumference = 2 * Math.PI * r;
 
-        // Configuration initiale
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = 0; // Entièrement plein au départ
+        circle.style.strokeDashoffset = 0;
 
         let TIME_LIMIT = 90;
         let secondsLeft = TIME_LIMIT;
@@ -410,7 +374,6 @@
         }
 
         function setProgress() {
-            // Calcul de l'offset : quand secondsLeft diminue, l'offset augmente (le cercle se vide)
             const fraction = (TIME_LIMIT - secondsLeft) / TIME_LIMIT;
             const offset = fraction * circumference;
             circle.style.strokeDashoffset = offset;
@@ -430,7 +393,6 @@
                     secondsLeft--;
                     updateDisplay();
                     setProgress();
-
                     if (secondsLeft <= 0) {
                         clearInterval(timerInterval);
                         timerInterval = null;
@@ -446,13 +408,12 @@
             timerInterval = null;
             secondsLeft = TIME_LIMIT;
             updateDisplay();
-            circle.style.strokeDashoffset = 0; // Remplit le cercle
+            circle.style.strokeDashoffset = 0;
             const btn = document.getElementById('btn-timer');
             btn.innerText = "Start";
             btn.className = "btn-watch btn-start";
         }
 
-        // Init
         updateDisplay();
     </script>
 </body>
