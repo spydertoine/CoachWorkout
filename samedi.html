@@ -7,6 +7,9 @@
     <title>Lundi | Workout Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap"
         rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@1,700;1,900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --apple-bg: #f5f5f7;
@@ -34,24 +37,23 @@
 
         .container {
             width: 100%;
-            max-width: 650px;
-            /* Aligné sur la nouvelle largeur de la montre */
+            max-width: 500px;
             margin: 0 auto;
             padding-bottom: 120px;
         }
 
-        /* --- BOUTON RETOUR --- */
+        /* --- STYLE DU BOUTON RETOUR --- */
         .btn-back {
             display: inline-block;
             text-decoration: none;
             color: var(--accent);
             font-weight: 600;
             font-size: 16px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             padding: 5px 0;
         }
 
-        /* --- LA MONTRE XL ULTRA-RÉALISTE --- */
+        /* --- LA MONTRE RÉALISTE (TON DESIGN PRÉFÉRÉ) --- */
         .watch-banner {
             position: sticky;
             top: 10px;
@@ -60,16 +62,13 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 650px;
-            /* Élargie pour s'aligner avec le bouton retour */
-            margin: 0 auto 40px auto;
-            height: 160px;
+            height: 130px;
+            margin-bottom: 40px;
         }
 
         .band-left,
         .band-right {
-            height: 85px;
-            /* Épaissi pour le gros boîtier */
+            height: 68px;
             background: var(--watch-band);
             flex: 1;
             position: relative;
@@ -80,19 +79,18 @@
         }
 
         .band-left {
-            border-radius: 50px 0 0 50px;
+            border-radius: 40px 0 0 40px;
             justify-content: center;
             border-right: 1px solid #1c1c1e;
         }
 
         .band-right {
-            border-radius: 0 50px 50px 0;
+            border-radius: 0 40px 40px 0;
             justify-content: center;
             border-left: 1px solid #1c1c1e;
-            gap: 10px;
+            gap: 8px;
         }
 
-        /* Texture Sport Band */
         .band-left::after,
         .band-right::before {
             content: "";
@@ -101,30 +99,26 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1.5px, transparent 1.5px);
-            background-size: 12px 12px;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1.2px, transparent 1.2px);
+            background-size: 10px 10px;
             pointer-events: none;
         }
 
         .watch-case {
-            width: 140px;
-            /* TAILLE XL */
-            height: 140px;
-            border-radius: 42px;
+            width: 112px;
+            height: 112px;
+            border-radius: 34px;
             z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
             position: relative;
             background: var(--watch-case);
-            border: 2px solid #3a3a3c;
+            border: 1.5px solid #3a3a3c;
             box-shadow:
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                inset 0 0 20px rgba(0, 0, 0, 0.8),
-                /* Jonction profonde */
-                inset 0 2px 5px rgba(255, 255, 255, 0.2);
-            /* Biseau poli */
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.6);
             overflow: hidden;
         }
 
@@ -136,15 +130,14 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-            border-radius: 42px;
             pointer-events: none;
             z-index: 4;
         }
 
         .timer-wrapper {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -152,7 +145,7 @@
 
         #timer-display {
             color: white;
-            font-size: 26px;
+            font-size: 19px;
             font-weight: 800;
             position: absolute;
             z-index: 5;
@@ -162,12 +155,12 @@
 
         .progress-ring {
             transform: rotate(-90deg);
-            width: 120px;
-            height: 120px;
-            filter: drop-shadow(0 0 5px var(--accent));
+            width: 90px;
+            height: 90px;
+            filter: drop-shadow(0 0 4px var(--accent));
         }
 
-        #timer-circle {
+        .progress-ring__circle {
             transition: stroke-dashoffset 1s linear;
             stroke-linecap: round;
         }
@@ -175,11 +168,11 @@
         .btn-watch {
             border: none;
             color: white;
-            height: 46px;
-            width: 85px;
-            border-radius: 23px;
+            height: 42px;
+            width: 75px;
+            border-radius: 21px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -189,38 +182,46 @@
         }
 
         .btn-watch:active {
-            transform: translateY(2px);
+            transform: translateY(1.5px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.4);
         }
 
         .btn-start {
-            background: linear-gradient(to bottom, #008aff, #005bb5);
+            background: linear-gradient(to bottom, #008aff 0%, #005bb5 100%);
         }
 
         .btn-pause {
-            background: linear-gradient(to bottom, #ffb347, #ff8c00);
+            background: linear-gradient(to bottom, #ffb347 0%, #ff8c00 100%);
         }
 
-        /* --- CARTES ET INPUTS --- */
+        /* --- CARTES EXERCICES 3D (HARMONIE AVEC L'INDEX) --- */
         .ex-card {
             background: var(--apple-card);
             backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-radius: 30px;
             padding: 25px;
             margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            /* Effet bombé identique à l'index */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.02);
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%, rgba(0, 0, 0, 0.02) 100%);
         }
 
         .ex-title h3 {
             font-size: 24px;
             font-weight: 800;
             color: var(--accent);
+            letter-spacing: -0.5px;
             margin-bottom: 5px;
         }
 
         .ex-title p {
             color: #86868b;
             font-size: 15px;
+            font-weight: 500;
             margin-bottom: 20px;
         }
 
@@ -230,26 +231,9 @@
             gap: 15px;
         }
 
-        .input-group {
-            position: relative;
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-group::after {
-            content: "m";
-            position: absolute;
-            right: 18px;
-            font-weight: 700;
-            color: #86868b;
-            font-size: 16px;
-            pointer-events: none;
-        }
-
         .perf-input {
             background: #f2f2f7;
-            border: none;
+            border: 2px solid transparent;
             padding: 18px;
             border-radius: 16px;
             text-align: center;
@@ -257,22 +241,13 @@
             font-weight: 700;
             width: 100%;
             outline: none;
+            transition: 0.2s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        .perf-input.weight-input {
-            padding-right: 45px;
-        }
-
-        /* Suffixe pour les répétitions */
-        .input-group.reps-group::after {
-            content: "Longueurs";
-            right: 15px;
-            /* Un peu plus d'espace car le mot est plus long */
-        }
-
-        /* On s'assure que l'input laisse assez de place à droite */
-        .perf-input.reps-input {
-            padding-right: 55px;
+        .perf-input:focus {
+            background: white;
+            border-color: var(--accent);
         }
 
         .btn-finish {
@@ -289,99 +264,113 @@
             border-radius: 25px;
             font-weight: 800;
             font-size: 19px;
+            box-shadow: 0 15px 35px rgba(0, 122, 255, 0.3);
+            cursor: pointer;
+        }
+
+        /* --- RESPONSIVE GRANDS ÉCRANS --- */
+        @media (min-width: 850px) {
+            .container {
+                max-width: 800px;
+            }
+
+            .watch-case {
+                width: 140px;
+                height: 140px;
+                border-radius: 42px;
+            }
+
+            .timer-wrapper,
+            .progress-ring {
+                width: 120px;
+                height: 120px;
+            }
+
+            #timer-display {
+                font-size: 24px;
+            }
+
+            .band-left,
+            .band-right {
+                height: 85px;
+            }
+
+            .btn-watch {
+                width: 100px;
+                height: 50px;
+                font-size: 14px;
+            }
+
+            .ex-card {
+                padding: 40px;
+            }
         }
     </style>
 </head>
 
 <body>
+
     <div class="container">
-        <a href="index.html" class="btn-back">‹ Retour</a>
+        <a href="index.html" class="btn-back">‹ Dashboard</a>
 
         <div class="watch-banner">
             <div class="band-left">
-                <button class="btn-watch" onclick="resetTimer()">Reset</button>
+                <button class="btn-watch btn-reset" onclick="resetTimer()">Reset</button>
             </div>
+
             <div class="watch-case">
                 <div class="timer-wrapper">
-                    <svg class="progress-ring" viewBox="0 0 100 100">
-                        <circle stroke="rgba(255,255,255,0.05)" stroke-width="5" fill="transparent" r="44" cx="50"
-                            cy="50" />
-                        <circle id="timer-circle" stroke="var(--accent)" stroke-width="5" fill="transparent" r="44"
-                            cx="50" cy="50" />
+                    <svg class="progress-ring" viewBox="0 0 80 80">
+                        <circle stroke="rgba(255,255,255,0.05)" stroke-width="4" fill="transparent" r="36" cx="40"
+                            cy="40" />
+                        <circle id="timer-circle" stroke="var(--accent)" stroke-width="4" fill="transparent" r="36"
+                            cx="40" cy="40" style="stroke-linecap: round;" />
                     </svg>
                     <div id="timer-display">01:30</div>
                 </div>
             </div>
+
             <div class="band-right">
                 <button class="btn-watch btn-start" onclick="toggleTimer()" id="btn-timer">Start</button>
             </div>
         </div>
 
         <header style="margin-bottom: 25px; padding-left: 5px;">
-            <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase;">Lundi</p>
-            <h1 style="font-size:36px; font-weight:800; letter-spacing: -1.5px;">Natation</h1>
+            <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase; letter-spacing: 1px;">
+                Lundi</p>
+            <h1 style="font-size:36px; font-weight:800; letter-spacing: -1.5px;">Pecs et Triceps</h1>
         </header>
 
         <form id="workoutForm">
             <div class="ex-card">
                 <div class="ex-title">
-                    <h3>Echauffement Crwal</h3>
-                    <p>10 Longueurs / 20m</p>
+                    <h3>Dips Pectoraux</h3>
+                    <p>4 séries • 8-12 reps</p>
                 </div>
                 <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
-                    </div>
-                </div>
-            </div>
-            <div class="ex-card">
-                <div class="ex-title">
-                    <h3>3 Nages</h3>
-                    <p>10 Longueurs / 20m</p>
-                </div>
-                <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
-                    </div>
-                </div>
-            </div>
-            <div class="ex-card">
-                <div class="ex-title">
-                    <h3>Sprint aller / Retour brasse</h3>
-                    <p>10 Longueurs / 20m</p>
-                </div>
-                <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
-                    </div>
-                </div>
-            </div>
-            <div class="ex-card">
-                <div class="ex-title">
-                    <h3>Crawl</h3>
-                    <p>10 Longueurs / 20m</p>
-                </div>
-                <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
-                    </div>
+                    <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
+                    <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
                 </div>
             </div>
 
-            <button type="button" class="btn-finish">Enregistrer la séance</button>
+            <div class="ex-card">
+                <div class="ex-title">
+                    <h3>Développé Couché</h3>
+                    <p>4 séries • 10 reps</p>
+                </div>
+                <div class="perf-grid">
+                    <input type="number" class="perf-input" name="ex2_poids" placeholder="Poids (kg)">
+                    <input type="number" class="perf-input" name="ex2_reps" placeholder="Reps">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-finish">Enregistrer la séance</button>
         </form>
     </div>
 
     <script>
         const circle = document.getElementById('timer-circle');
-        const display = document.getElementById('timer-display');
-        const btn = document.getElementById('btn-timer');
-
-        const r = 44; // Rayon mis à jour pour la montre XL
+        const r = 36;
         const circumference = 2 * Math.PI * r;
 
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
@@ -394,7 +383,7 @@
         function updateDisplay() {
             let m = Math.floor(secondsLeft / 60);
             let s = secondsLeft % 60;
-            display.textContent = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+            document.getElementById('timer-display').textContent = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
         }
 
         function setProgress() {
@@ -403,18 +392,16 @@
             circle.style.strokeDashoffset = offset;
         }
 
-        function toggleTimer() {
+        window.toggleTimer = function () {
+            const btn = document.getElementById('btn-timer');
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
                 btn.innerText = "Start";
-                btn.classList.remove('btn-pause');
-                btn.classList.add('btn-start');
+                btn.className = "btn-watch btn-start";
             } else {
                 btn.innerText = "Pause";
-                btn.classList.remove('btn-start');
-                btn.classList.add('btn-pause');
-
+                btn.className = "btn-watch btn-pause";
                 timerInterval = setInterval(() => {
                     secondsLeft--;
                     updateDisplay();
@@ -429,15 +416,15 @@
             }
         }
 
-        function resetTimer() {
+        window.resetTimer = function () {
             clearInterval(timerInterval);
             timerInterval = null;
             secondsLeft = TIME_LIMIT;
             updateDisplay();
             circle.style.strokeDashoffset = 0;
+            const btn = document.getElementById('btn-timer');
             btn.innerText = "Start";
-            btn.classList.remove('btn-pause');
-            btn.classList.add('btn-start');
+            btn.className = "btn-watch btn-start";
         }
 
         updateDisplay();
