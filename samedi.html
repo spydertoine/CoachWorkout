@@ -7,9 +7,6 @@
     <title>Lundi | Workout Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap"
         rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@1,700;1,900&display=swap"
-        rel="stylesheet">
     <style>
         :root {
             --apple-bg: #f5f5f7;
@@ -17,7 +14,6 @@
             --accent: #007aff;
             --watch-case: #0a0a0b;
             --watch-band: #2c2c2e;
-            --pause: #ff9f0a;
         }
 
         * {
@@ -32,7 +28,6 @@
             background-attachment: fixed;
             padding: 15px;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
         .container {
@@ -42,7 +37,7 @@
             padding-bottom: 120px;
         }
 
-        /* --- STYLE DU BOUTON RETOUR --- */
+        /* --- BOUTON RETOUR --- */
         .btn-back {
             display: inline-block;
             text-decoration: none;
@@ -50,10 +45,9 @@
             font-weight: 600;
             font-size: 16px;
             margin-bottom: 15px;
-            padding: 5px 0;
         }
 
-        /* --- LA MONTRE RÉALISTE (TON DESIGN PRÉFÉRÉ) --- */
+        /* --- LA MONTRE AVEC PROFONDEUR 3D --- */
         .watch-banner {
             position: sticky;
             top: 10px;
@@ -62,35 +56,81 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            height: 130px;
-            margin-bottom: 40px;
+            margin: 0 auto 30px auto;
+            height: auto;
+            min-height: 120px;
+        }
+
+        .watch-case {
+            width: 28vw;
+            height: 28vw;
+            max-width: 140px;
+            max-height: 140px;
+            min-width: 100px;
+            min-height: 100px;
+            border-radius: 22%;
+            flex-shrink: 0;
+            z-index: 2;
+            position: relative;
+            background: var(--watch-case);
+            border: 1.5px solid #3a3a3c;
+            /* PROFONDEUR ACCENTUÉE */
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                /* Ombre sous la montre */
+                inset 0 0 15px rgba(0, 0, 0, 0.9),
+                /* Écran enfoncé sous le verre */
+                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            /* Biseau poli sur le bord */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Reflet sur le verre */
+        .watch-case::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 4;
         }
 
         .band-left,
         .band-right {
-            height: 68px;
+            height: 18vw;
+            max-height: 85px;
+            min-height: 62px;
             background: var(--watch-band);
             flex: 1;
             position: relative;
             display: flex;
             align-items: center;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
             background: linear-gradient(to bottom, #3a3a3c 0%, #2c2c2e 50%, #1c1c1e 100%);
         }
 
         .band-left {
             border-radius: 40px 0 0 40px;
             justify-content: center;
-            border-right: 1px solid #1c1c1e;
+            border-right: 1px solid #000;
+            /* Ombre de jonction */
         }
 
         .band-right {
             border-radius: 0 40px 40px 0;
             justify-content: center;
-            border-left: 1px solid #1c1c1e;
             gap: 8px;
+            border-left: 1px solid #000;
+            /* Ombre de jonction */
         }
 
+        /* Texture Sport Band */
         .band-left::after,
         .band-right::before {
             content: "";
@@ -104,40 +144,11 @@
             pointer-events: none;
         }
 
-        .watch-case {
-            width: 112px;
-            height: 112px;
-            border-radius: 34px;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background: var(--watch-case);
-            border: 1.5px solid #3a3a3c;
-            box-shadow:
-                0 25px 50px rgba(0, 0, 0, 0.5),
-                inset 0 2px 4px rgba(255, 255, 255, 0.2),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.6);
-            overflow: hidden;
-        }
-
-        .watch-case::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 4;
-        }
-
         .timer-wrapper {
             position: relative;
-            width: 90px;
-            height: 90px;
+            width: 85%;
+            height: 85%;
+            /* On force le centrage de tout ce qui est dedans */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -145,18 +156,29 @@
 
         #timer-display {
             color: white;
-            font-size: 19px;
+            /* On utilise clamp pour que ce soit beau sur iPhone et PC */
+            font-size: clamp(18px, 5vw, 26px);
             font-weight: 800;
+            /* POSITION ABSOLUE : C'est le secret pour être AU-DESSUS du cercle */
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 5;
+            text-shadow: 0 0 10px rgba(0, 122, 255, 0.6);
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            margin: 0;
         }
 
         .progress-ring {
             transform: rotate(-90deg);
-            width: 90px;
-            height: 90px;
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 5px var(--accent));
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
             filter: drop-shadow(0 0 4px var(--accent));
         }
 
@@ -168,61 +190,34 @@
         .btn-watch {
             border: none;
             color: white;
-            height: 42px;
+            height: 40px;
             width: 75px;
-            border-radius: 21px;
+            border-radius: 20px;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.2s ease;
-            background: linear-gradient(to bottom, #4a4a4c 0%, #2c2c2e 100%);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(0, 0, 0, 0.4);
-        }
-
-        .btn-watch:active {
-            transform: translateY(1.5px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to bottom, #4a4a4c, #2c2c2e);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.3);
         }
 
         .btn-start {
-            background: linear-gradient(to bottom, #008aff 0%, #005bb5 100%);
+            background: linear-gradient(to bottom, #008aff, #005bb5);
         }
 
         .btn-pause {
-            background: linear-gradient(to bottom, #ffb347 0%, #ff8c00 100%);
+            background: linear-gradient(to bottom, #ffb347, #ff8c00);
         }
 
-        /* --- CARTES EXERCICES 3D (HARMONIE AVEC L'INDEX) --- */
+        /* --- INPUTS ET CARTES --- */
         .ex-card {
             background: var(--apple-card);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
             border-radius: 30px;
             padding: 25px;
             margin-bottom: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            /* Effet bombé identique à l'index */
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05),
-                inset 0 1px 2px rgba(255, 255, 255, 0.8),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.02);
-            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%, rgba(0, 0, 0, 0.02) 100%);
-        }
-
-        .ex-title h3 {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--accent);
-            letter-spacing: -0.5px;
-            margin-bottom: 5px;
-        }
-
-        .ex-title p {
-            color: #86868b;
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 20px;
+            border: 1px solid white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
         }
 
         .perf-grid {
@@ -231,9 +226,32 @@
             gap: 15px;
         }
 
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .input-group::after {
+            position: absolute;
+            right: 15px;
+            font-weight: 700;
+            color: #86868b;
+            font-size: 15px;
+        }
+
+        .input-group.weight-group::after {
+            content: "m";
+        }
+
+        .input-group.reps-group::after {
+            content: "Long";
+        }
+
         .perf-input {
             background: #f2f2f7;
-            border: 2px solid transparent;
+            border: none;
             padding: 18px;
             border-radius: 16px;
             text-align: center;
@@ -241,13 +259,6 @@
             font-weight: 700;
             width: 100%;
             outline: none;
-            transition: 0.2s;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .perf-input:focus {
-            background: white;
-            border-color: var(--accent);
         }
 
         .btn-finish {
@@ -264,171 +275,263 @@
             border-radius: 25px;
             font-weight: 800;
             font-size: 19px;
-            box-shadow: 0 15px 35px rgba(0, 122, 255, 0.3);
-            cursor: pointer;
         }
 
-        /* --- RESPONSIVE GRANDS ÉCRANS --- */
+        /* --- AJUSTEMENT PC --- */
         @media (min-width: 850px) {
             .container {
                 max-width: 800px;
             }
 
-            .watch-case {
-                width: 140px;
-                height: 140px;
-                border-radius: 42px;
-            }
-
-            .timer-wrapper,
-            .progress-ring {
-                width: 120px;
-                height: 120px;
-            }
-
-            #timer-display {
-                font-size: 24px;
-            }
-
-            .band-left,
-            .band-right {
-                height: 85px;
+            .watch-banner {
+                max-width: 650px;
+                height: 160px;
             }
 
             .btn-watch {
                 width: 100px;
                 height: 50px;
-                font-size: 14px;
+                font-size: 13px;
             }
+        }
 
-            .ex-card {
-                padding: 40px;
-            }
+        .input-group.distance-group::after {
+            content: "m";
+        }
+
+        .input-group.long-group::after {
+            content: "long";
+            font-size: 11px;
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-        <a href="index.html" class="btn-back">‹ Dashboard</a>
+        <a href="index.html" class="btn-back">‹ Retour</a>
 
         <div class="watch-banner">
             <div class="band-left">
-                <button class="btn-watch btn-reset" onclick="resetTimer()">Reset</button>
+                <button class="btn-watch" onclick="resetTimer()">Reset</button>
             </div>
-
             <div class="watch-case">
                 <div class="timer-wrapper">
-                    <svg class="progress-ring" viewBox="0 0 80 80">
-                        <circle stroke="rgba(255,255,255,0.05)" stroke-width="4" fill="transparent" r="36" cx="40"
-                            cy="40" />
-                        <circle id="timer-circle" stroke="var(--accent)" stroke-width="4" fill="transparent" r="36"
-                            cx="40" cy="40" style="stroke-linecap: round;" />
+                    <svg class="progress-ring" viewBox="0 0 100 100">
+                        <circle stroke="rgba(255,255,255,0.05)" stroke-width="5" fill="transparent" r="44" cx="50"
+                            cy="50" />
+                        <circle id="timer-circle" stroke="var(--accent)" stroke-width="5" fill="transparent" r="44"
+                            cx="50" cy="50" />
                     </svg>
                     <div id="timer-display">01:30</div>
                 </div>
             </div>
-
             <div class="band-right">
                 <button class="btn-watch btn-start" onclick="toggleTimer()" id="btn-timer">Start</button>
             </div>
         </div>
 
         <header style="margin-bottom: 25px; padding-left: 5px;">
-            <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase; letter-spacing: 1px;">
-                Lundi</p>
-            <h1 style="font-size:36px; font-weight:800; letter-spacing: -1.5px;">Pecs et Triceps</h1>
+            <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase;">Lundi</p>
+            <h1 style="font-size:36px; font-weight:800; letter-spacing: -1.5px;">Natation</h1>
         </header>
 
         <form id="workoutForm">
             <div class="ex-card">
                 <div class="ex-title">
-                    <h3>Dips Pectoraux</h3>
-                    <p>4 séries • 8-12 reps</p>
+                    <h3>Echauffement Crawl</h3>
+                    <p>Objectif : Distance et technique</p>
                 </div>
                 <div class="perf-grid">
-                    <input type="number" class="perf-input" name="ex1_poids" placeholder="Poids (kg)">
-                    <input type="number" class="perf-input" name="ex1_reps" placeholder="Reps">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex1_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex1_reps" class="perf-input" placeholder="0">
+                    </div>
                 </div>
             </div>
 
             <div class="ex-card">
                 <div class="ex-title">
-                    <h3>Développé Couché</h3>
-                    <p>4 séries • 10 reps</p>
+                    <h3>3 Nages</h3>
+                    <p>Alternance des styles</p>
                 </div>
                 <div class="perf-grid">
-                    <input type="number" class="perf-input" name="ex2_poids" placeholder="Poids (kg)">
-                    <input type="number" class="perf-input" name="ex2_reps" placeholder="Reps">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex2_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex2_reps" class="perf-input" placeholder="0">
+                    </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn-finish">Enregistrer la séance</button>
+            <div class="ex-card">
+                <div class="ex-title">
+                    <h3>Sprint Brasse</h3>
+                    <p>Vitesse maximum</p>
+                </div>
+                <div class="perf-grid">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex3_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex3_reps" class="perf-input" placeholder="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="ex-card">
+                <div class="ex-title">
+                    <h3>Crawl Final</h3>
+                    <p>Endurance de fin de séance</p>
+                </div>
+                <div class="perf-grid">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex4_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex4_reps" class="perf-input" placeholder="0">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-finish">Enregistrer la séance</button>
         </form>
-    </div>
 
-    <script>
-        const circle = document.getElementById('timer-circle');
-        const r = 36;
-        const circumference = 2 * Math.PI * r;
+        <script type="module">
+            // 1. IMPORTATIONS
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+            import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+            import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = 0;
+            // 2. CONFIGURATION FIREBASE
+            const firebaseConfig = {
+                apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw",
+                authDomain: "coachworkout-65b99.firebaseapp.com",
+                projectId: "coachworkout-65b99",
+                storageBucket: "coachworkout-65b99.firebasestorage.app",
+                messagingSenderId: "78930491774",
+                appId: "1:78930491774:web:d480943e82efa2db451b2f"
+            };
 
-        let TIME_LIMIT = 90;
-        let secondsLeft = TIME_LIMIT;
-        let timerInterval = null;
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
 
-        function updateDisplay() {
-            let m = Math.floor(secondsLeft / 60);
-            let s = secondsLeft % 60;
-            document.getElementById('timer-display').textContent = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
-        }
+            let uid = null;
 
-        function setProgress() {
-            const fraction = (TIME_LIMIT - secondsLeft) / TIME_LIMIT;
-            const offset = fraction * circumference;
-            circle.style.strokeDashoffset = offset;
-        }
+            onAuthStateChanged(auth, (user) => {
+                if (user) { uid = user.uid; }
+                else { window.location.href = 'login.html'; }
+            });
 
-        window.toggleTimer = function () {
-            const btn = document.getElementById('btn-timer');
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-                btn.innerText = "Start";
-                btn.className = "btn-watch btn-start";
-            } else {
-                btn.innerText = "Pause";
-                btn.className = "btn-watch btn-pause";
-                timerInterval = setInterval(() => {
-                    secondsLeft--;
-                    updateDisplay();
-                    setProgress();
-                    if (secondsLeft <= 0) {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                        btn.innerText = "Fin";
-                        if (window.navigator.vibrate) window.navigator.vibrate([200, 100, 200]);
-                    }
-                }, 1000);
+            // 3. LOGIQUE DE LA MONTRE FLUIDE
+            let timerInterval;
+            let timeLeft = 90;
+            let isRunning = false;
+
+            const timerDisplay = document.getElementById('timer-display');
+            const timerCircle = document.getElementById('timer-circle');
+            const btnTimer = document.getElementById('btn-timer');
+
+            const radius = 44;
+            const circumference = 2 * Math.PI * radius;
+
+            // Initialisation du cercle
+            timerCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+            timerCircle.style.strokeDashoffset = 0;
+
+            function updateDisplay(isReset = false) {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                // GESTION DE LA FLUIDITÉ
+                if (isReset) {
+                    // Animation rapide et fluide pour le reset
+                    timerCircle.style.transition = "stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+                } else if (isRunning) {
+                    // Transition linéaire seconde par seconde pendant le décompte
+                    timerCircle.style.transition = "stroke-dashoffset 1s linear";
+                } else {
+                    timerCircle.style.transition = "none";
+                }
+
+                const offset = circumference - (timeLeft / 90) * circumference;
+                timerCircle.style.strokeDashoffset = offset;
             }
-        }
 
-        window.resetTimer = function () {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            secondsLeft = TIME_LIMIT;
+            window.toggleTimer = function () {
+                if (isRunning) {
+                    clearInterval(timerInterval);
+                    btnTimer.innerText = "Start";
+                    btnTimer.classList.replace('btn-pause', 'btn-start');
+                } else {
+                    // On enlève la transition de reset avant de démarrer
+                    timerCircle.style.transition = "stroke-dashoffset 1s linear";
+                    timerInterval = setInterval(() => {
+                        timeLeft--;
+                        updateDisplay();
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            resetTimer();
+                        }
+                    }, 1000);
+                    btnTimer.innerText = "Pause";
+                    btnTimer.classList.replace('btn-start', 'btn-pause');
+                }
+                isRunning = !isRunning;
+            };
+
+            window.resetTimer = function () {
+                clearInterval(timerInterval);
+                timeLeft = 90;
+                isRunning = false;
+                btnTimer.innerText = "Start";
+                btnTimer.classList.remove('btn-pause');
+                btnTimer.classList.add('btn-start');
+
+                // On appelle l'update avec l'argument "isReset" à true
+                updateDisplay(true);
+            };
+
             updateDisplay();
-            circle.style.strokeDashoffset = 0;
-            const btn = document.getElementById('btn-timer');
-            btn.innerText = "Start";
-            btn.className = "btn-watch btn-start";
-        }
 
-        updateDisplay();
-    </script>
+            // 4. ENREGISTREMENT SÉANCE
+            async function saveWorkout() {
+                if (!uid) return;
+                const btn = document.querySelector('.btn-finish');
+                btn.disabled = true;
+                btn.innerText = "Synchronisation...";
+
+                const workoutData = {
+                    userId: uid,
+                    date: serverTimestamp(),
+                    jour: "Lundi",
+                    type: "Natation",
+                    exercices: [
+                        { nom: "Echauffement Crawl", poids: document.getElementById('ex1_poids').value || "0", reps: document.getElementById('ex1_reps').value || "0" },
+                        { nom: "3 Nages", poids: document.getElementById('ex2_poids').value || "0", reps: document.getElementById('ex2_reps').value || "0" },
+                        { nom: "Sprint Brasse", poids: document.getElementById('ex3_poids').value || "0", reps: document.getElementById('ex3_reps').value || "0" },
+                        { nom: "Crawl Final", poids: document.getElementById('ex4_poids').value || "0", reps: document.getElementById('ex4_reps').value || "0" }
+                    ]
+                };
+
+                try {
+                    await addDoc(collection(db, "workouts"), workoutData);
+                    btn.style.background = "#34c759";
+                    btn.innerText = "Séance enregistrée ! ✅";
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+                } catch (e) {
+                    alert("Erreur");
+                    btn.disabled = false;
+                    btn.innerText = "Enregistrer la séance";
+                }
+            }
+
+            document.querySelector('.btn-finish').addEventListener('click', saveWorkout);
+        </script>
 </body>
 
 </html>
