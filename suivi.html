@@ -1,80 +1,269 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mon Suivi Santé | Workout Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
-        :root { 
-            --apple-bg: #f5f5f7; 
-            --accent: #007aff; 
+        :root {
+            --apple-bg: #f5f5f7;
+            --accent: #007aff;
             --apple-card: rgba(255, 255, 255, 0.8);
             --apple-sub: #86868b;
-            --prot: #ff3b30; --glu: #ff9f0a; --lip: #34c759;
+            --prot: #ff3b30;
+            --glu: #ff9f0a;
+            --lip: #34c759;
         }
 
-        body { 
-            font-family: 'SF Pro Display', -apple-system, sans-serif; 
+        body {
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
             background: radial-gradient(circle at top right, #e2e2ff, transparent),
-                        radial-gradient(circle at bottom left, #ffe2e2, transparent),
-                        var(--apple-bg);
+                radial-gradient(circle at bottom left, #ffe2e2, transparent),
+                var(--apple-bg);
             background-attachment: fixed;
-            margin: 0; padding: 40px 20px; -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 500px; margin: 0 auto; padding-bottom: 100px; }
-        .back-link { text-decoration: none; color: var(--accent); font-weight: 600; display: block; margin-bottom: 20px; }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
 
-        header { margin-bottom: 30px; }
-        .welcome-label { color: var(--apple-sub); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; display: block; }
-        h1 { font-size: 34px; font-weight: 800; letter-spacing: -1.5px; margin: 5px 0; }
+        .back-link {
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        .welcome-label {
+            color: var(--apple-sub);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin: 5px 0;
+        }
 
         .stat-card {
             background: var(--apple-card);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            padding: 25px; border-radius: 24px; margin-bottom: 20px;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 25px;
+            border-radius: 24px;
+            margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
         }
 
-        .stat-label { color: var(--apple-sub); font-size: 12px; font-weight: 700; margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-value { font-size: 32px; font-weight: 800; color: #1d1d1f; }
-        
-        .macro-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .macro-item { text-align: center; padding: 15px; border-radius: 18px; background: rgba(255,255,255,0.4); }
-        .macro-name { font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        .macro-val { font-size: 20px; font-weight: 800; }
+        .stat-label {
+            color: var(--apple-sub);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-        /* Grille d'édition */
-        .edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; }
-        .input-group { margin-bottom: 15px; }
-        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1d1d1f;
+        }
+
+        .macro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .macro-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .macro-name {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .macro-val {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .edit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
         .input-styled {
-            width: 100%; border: none; background: rgba(0,0,0,0.05); padding: 16px;
-            border-radius: 14px; font-size: 18px; font-weight: 700; font-family: inherit;
-            box-sizing: border-box; color: var(--accent); outline: none;
+            width: 100%;
+            border: none;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: inherit;
+            box-sizing: border-box;
+            color: var(--accent);
+            outline: none;
             transition: 0.2s;
         }
-        .input-styled:focus { background: rgba(255,255,255,0.8); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+
+        .input-styled:focus {
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
 
         .btn-sync {
-            width: 100%; background: var(--accent); color: white; border: none;
-            padding: 20px; border-radius: 20px; font-weight: 700; font-size: 17px;
-            cursor: pointer; margin-top: 20px; transition: 0.3s;
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
             box-shadow: 0 10px 25px rgba(0, 122, 255, 0.25);
         }
-        .btn-sync:active { transform: scale(0.96); }
-        .btn-sync:disabled { background: #d2d2d7; box-shadow: none; }
 
-        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-top: 10px; }
+        .btn-sync:active {
+            transform: scale(0.96);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* --- NOUVEAU : STYLE HISTORIQUE --- */
+        .history-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 40px 0 20px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .workout-history-card {
+            background: white;
+            border-radius: 22px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .workout-date {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--apple-sub);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .workout-name {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .exercise-log {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-top: 1px solid #f2f2f7;
+            font-size: 14px;
+        }
+
+        .exercise-log span:last-child {
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .empty-history {
+            text-align: center;
+            color: var(--apple-sub);
+            padding: 30px;
+            font-style: italic;
+        }
+
+        /* Bouton supprimer dans la carte */
+        .btn-delete-session {
+            background: #f2f2f7;
+            color: #ff3b30;
+            /* Rouge Apple */
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-left: 10px;
+        }
+
+        .btn-delete-session:active {
+            transform: scale(0.8);
+            background: #ffe2e2;
+        }
+
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="container">
         <a href="index.html" class="back-link">‹ Dashboard</a>
-        
+
         <header>
             <span class="welcome-label">Profil & Santé</span>
             <h1>Mon Suivi</h1>
@@ -85,7 +274,6 @@
                 <span class="stat-label">Prénom</span>
                 <input type="text" id="prenom-input" class="input-styled" placeholder="Ton prénom">
             </div>
-
             <div class="edit-grid">
                 <div>
                     <span class="stat-label">Âge</span>
@@ -96,7 +284,6 @@
                     <input type="number" id="taille-input" class="input-styled" placeholder="Taille">
                 </div>
             </div>
-
             <div class="input-group" style="margin-bottom: 0;">
                 <span class="stat-label">Poids actuel (kg)</span>
                 <input type="number" id="poids-input" class="input-styled" step="0.1" placeholder="Poids">
@@ -111,7 +298,8 @@
 
         <div class="stat-card">
             <span class="stat-label">Besoins Journaliers</span>
-            <div id="cal-value" class="stat-value">-- <span style="font-size: 16px; color: var(--apple-sub);">kcal/jour</span></div>
+            <div id="cal-value" class="stat-value">-- <span
+                    style="font-size: 16px; color: var(--apple-sub);">kcal/jour</span></div>
         </div>
 
         <div class="stat-card">
@@ -120,119 +308,235 @@
                 <div class="macro-item" style="color: var(--prot);">
                     <div class="macro-name">Protéines</div>
                     <div class="macro-val" id="m-prot">--</div>
-                    <div style="font-size: 10px; font-weight: 600;">grammes</div>
                 </div>
                 <div class="macro-item" style="color: var(--glu);">
                     <div class="macro-name">Glucides</div>
                     <div class="macro-val" id="m-glu">--</div>
-                    <div style="font-size: 10px; font-weight: 600;">grammes</div>
                 </div>
                 <div class="macro-item" style="color: var(--lip);">
                     <div class="macro-name">Lipides</div>
                     <div class="macro-val" id="m-lip">--</div>
-                    <div style="font-size: 10px; font-weight: 600;">grammes</div>
                 </div>
             </div>
         </div>
 
         <button id="btn-update" class="btn-sync">Mettre à jour mon profil</button>
+
+        <h2 class="history-title">Mes Séances Passées</h2>
+        <div id="history-container">
+            <div class="empty-history">Chargement de l'historique...</div>
+        </div>
+
         <p style="text-align: center; font-size: 12px; color: var(--apple-sub); margin-top: 15px;">
             Synchronisation Cloud active • <span id="last-sync">--</span>
         </p>
     </div>
+    <div id="delete-modal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); backdrop-filter:blur(5px); z-index:999; align-items:center; justify-content:center;">
+        <div
+            style="background:white; width:85%; max-width:320px; border-radius:20px; padding:25px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+            <div style="font-size:40px; margin-bottom:10px;">🗑️</div>
+            <h3 style="margin:0 0 10px 0; font-size:18px; font-weight:800;">Supprimer la séance ?</h3>
+            <p style="color:#86868b; font-size:14px; margin-bottom:25px;">Cette action est définitive et ne pourra pas
+                être annulée.</p>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+            <div style="display:flex; gap:10px;">
+                <button onclick="closeDeleteModal()"
+                    style="flex:1; padding:15px; border-radius:12px; border:none; background:#f2f2f7; color:#1d1d1f; font-weight:700; cursor:pointer;">Annuler</button>
+                <button id="confirm-delete-btn"
+                    style="flex:1; padding:15px; border-radius:12px; border:none; background:#ff3b30; color:white; font-weight:700; cursor:pointer;">Supprimer</button>
+            </div>
+        </div>
+    </div>
+<script type="module">
+    // 1. IMPORTATIONS
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { 
+        getFirestore, doc, getDoc, updateDoc, collection, 
+        query, where, orderBy, getDocs, deleteDoc 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw",
-            authDomain: "coachworkout-65b99.firebaseapp.com",
-            projectId: "coachworkout-65b99",
-            storageBucket: "coachworkout-65b99.firebasestorage.app",
-            messagingSenderId: "78930491774",
-            appId: "1:78930491774:web:d480943e82efa2db451b2f"
-        };
+    // 2. CONFIGURATION
+    const firebaseConfig = {
+        apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw",
+        authDomain: "coachworkout-65b99.firebaseapp.com",
+        projectId: "coachworkout-65b99",
+        storageBucket: "coachworkout-65b99.firebasestorage.app",
+        messagingSenderId: "78930491774",
+        appId: "1:78930491774:web:d480943e82efa2db451b2f"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        let currentUser = null;
-        let userData = null;
+    let currentUser = null;
+    let userData = null;
+    let docIdToDelete = null; // Stockage temporaire pour la suppression
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                const docSnap = await getDoc(doc(db, "users", user.uid));
-                if (docSnap.exists()) {
-                    userData = docSnap.data();
-                    updateUI();
-                }
-            } else { window.location.href = "login.html"; }
-        });
-
-        function updateUI() {
-            const P = parseFloat(userData.poids) || 0;
-            const T = parseFloat(userData.taille) || 0;
-            const A = parseInt(userData.age) || 0;
-            const Nom = userData.prenom || "";
-            
-            document.getElementById('prenom-input').value = Nom;
-            document.getElementById('age-input').value = A;
-            document.getElementById('poids-input').value = P;
-            document.getElementById('taille-input').value = T;
-
-            // IMC
-            if (T > 0 && P > 0) {
-                const imc = (P / ((T/100) * (T/100))).toFixed(1);
-                document.getElementById('imc-value').innerText = imc;
-                const status = document.getElementById('imc-status');
-                if (imc < 18.5) { status.innerText = "Poids faible"; status.style.background = "#ff9f0a"; }
-                else if (imc < 25) { status.innerText = "Poids idéal"; status.style.background = "#34c759"; status.style.color = "white"; }
-                else { status.innerText = "Surpoids"; status.style.background = "#ff3b30"; status.style.color = "white"; }
-
-                // Calories (Mifflin-St Jeor)
-                const bmr = (10 * P) + (6.25 * T) - (5 * A) + 5;
-                const tdee = Math.round(bmr * 1.375);
-                document.getElementById('cal-value').innerHTML = `${tdee} <span style="font-size: 16px; color: var(--apple-sub);">kcal/jour</span>`;
-
-                // Macros
-                document.getElementById('m-prot').innerText = Math.round((tdee * 0.30) / 4);
-                document.getElementById('m-glu').innerText = Math.round((tdee * 0.45) / 4);
-                document.getElementById('m-lip').innerText = Math.round((tdee * 0.25) / 9);
-            }
-
-            document.getElementById('last-sync').innerText = new Date().toLocaleTimeString();
-        }
-
-        document.getElementById('btn-update').onclick = async () => {
-            const btn = document.getElementById('btn-update');
-            const updatedData = {
-                prenom: document.getElementById('prenom-input').value,
-                age: document.getElementById('age-input').value,
-                poids: document.getElementById('poids-input').value,
-                taille: document.getElementById('taille-input').value
-            };
-
-            btn.innerText = "Synchronisation...";
-            btn.disabled = true;
-
-            try {
-                await updateDoc(doc(db, "users", currentUser.uid), updatedData);
-                
-                // Mise à jour de la mémoire locale pour l'affichage immédiat
-                Object.assign(userData, updatedData);
+    // 3. SURVEILLANCE AUTHENTIFICATION
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentUser = user;
+            const docSnap = await getDoc(doc(db, "users", user.uid));
+            if (docSnap.exists()) {
+                userData = docSnap.data();
                 updateUI();
+            }
+            loadWorkoutHistory(user.uid);
+        } else { 
+            window.location.href = "login.html"; 
+        }
+    });
+
+    // 4. CHARGEMENT DE L'HISTORIQUE
+    async function loadWorkoutHistory(uid) {
+        const container = document.getElementById('history-container');
+        try {
+            const q = query(
+                collection(db, "workouts"), 
+                where("userId", "==", uid), 
+                orderBy("date", "desc")
+            );
+
+            const querySnapshot = await getDocs(q);
+            
+            if (querySnapshot.empty) {
+                container.innerHTML = '<div class="empty-history">Aucune séance enregistrée.</div>';
+                return;
+            }
+
+            container.innerHTML = ""; 
+
+            querySnapshot.forEach((docSnap) => {
+                const workout = docSnap.data();
+                const docId = docSnap.id;
+                const dateStr = workout.date?.toDate().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
                 
-                btn.innerText = "Profil à jour !";
-                setTimeout(() => { btn.disabled = false; btn.innerText = "Mettre à jour mon profil"; }, 2000);
-            } catch (e) {
-                alert("Erreur : " + e.message);
-                btn.disabled = false;
+                let exHTML = "";
+                workout.exercices.forEach(ex => {
+                    // Modifie ici "m / long" par "kg x reps" si tu repasses en musculation
+                    exHTML += `
+                        <div class="exercise-log" style="display:flex; justify-content:space-between; padding:8px 0; border-top:1px solid #f0f0f5;">
+                            <span style="font-size:14px;">${ex.nom}</span>
+                            <span style="font-size:14px; font-weight:600;">${ex.poids}m / ${ex.reps} long</span>
+                        </div>`;
+                });
+
+                const card = document.createElement('div');
+                card.className = "workout-history-card";
+                card.id = `card-${docId}`;
+                card.style = "background:white; border-radius:20px; padding:20px; margin-bottom:15px; box-shadow:0 10px 25px rgba(0,0,0,0.05);";
+                card.innerHTML = `
+                    <div class="session-header" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                        <div>
+                            <div style="font-size:11px; color:#86868b; font-weight:700; text-transform:uppercase;">${dateStr}</div>
+                            <div style="font-size:18px; color:#1d1d1f; font-weight:800;">${workout.type || workout.jour}</div>
+                        </div>
+                        <button onclick="confirmDelete('${docId}')" style="background:#f2f2f7; color:#ff3b30; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-weight:800;">✕</button>
+                    </div>
+                    <div class="ex-list">${exHTML}</div>
+                `;
+                container.appendChild(card);
+            });
+        } catch (e) { 
+            console.error(e);
+            container.innerHTML = '<div class="empty-history">Erreur de chargement.</div>';
+        }
+    }
+
+    // 5. GESTION DE LA MODALE DE SUPPRESSION
+    window.confirmDelete = function(docId) {
+        docIdToDelete = docId;
+        const modal = document.getElementById('delete-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    };
+
+    window.closeDeleteModal = function() {
+        const modal = document.getElementById('delete-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+        docIdToDelete = null;
+    };
+
+    // Action du bouton "Supprimer" dans la modale
+    const confirmBtn = document.getElementById('confirm-delete-btn');
+    if (confirmBtn) {
+        confirmBtn.onclick = async () => {
+            if (docIdToDelete) {
+                try {
+                    confirmBtn.innerText = "Suppression...";
+                    confirmBtn.disabled = true;
+
+                    await deleteDoc(doc(db, "workouts", docIdToDelete));
+                    
+                    const card = document.getElementById(`card-${docIdToDelete}`);
+                    if (card) {
+                        card.style.transition = "0.4s all ease";
+                        card.style.opacity = "0";
+                        card.style.transform = "scale(0.8) translateY(20px)";
+                        setTimeout(() => card.remove(), 400);
+                    }
+                    
+                    closeDeleteModal();
+                    confirmBtn.innerText = "Supprimer";
+                    confirmBtn.disabled = false;
+                } catch (e) {
+                    alert("Erreur lors de la suppression.");
+                    closeDeleteModal();
+                }
             }
         };
-    </script>
+    }
+
+    // 6. MISE À JOUR UI PROFIL
+    function updateUI() {
+        if (!userData) return;
+        document.getElementById('prenom-input').value = userData.prenom || "";
+        document.getElementById('age-input').value = userData.age || 0;
+        document.getElementById('poids-input').value = userData.poids || 0;
+        document.getElementById('taille-input').value = userData.taille || 0;
+
+        const P = parseFloat(userData.poids) || 0;
+        const T = parseFloat(userData.taille) || 0;
+        const A = parseInt(userData.age) || 0;
+
+        if (T > 0 && P > 0) {
+            const imc = (P / ((T / 100) * (T / 100))).toFixed(1);
+            document.getElementById('imc-value').innerText = imc;
+
+            const bmr = (10 * P) + (6.25 * T) - (5 * A) + 5;
+            const tdee = Math.round(bmr * 1.375);
+            document.getElementById('cal-value').innerHTML = `${tdee} <span style="font-size:16px; color:#86868b;">kcal/jour</span>`;
+
+            document.getElementById('m-prot').innerText = Math.round((tdee * 0.30) / 4);
+            document.getElementById('m-glu').innerText = Math.round((tdee * 0.45) / 4);
+            document.getElementById('m-lip').innerText = Math.round((tdee * 0.25) / 9);
+        }
+        document.getElementById('last-sync').innerText = new Date().toLocaleTimeString();
+    }
+
+    // 7. SYNCHRO PROFIL
+    document.getElementById('btn-update').onclick = async () => {
+        const btn = document.getElementById('btn-update');
+        const data = {
+            prenom: document.getElementById('prenom-input').value,
+            age: document.getElementById('age-input').value,
+            poids: document.getElementById('poids-input').value,
+            taille: document.getElementById('taille-input').value
+        };
+        btn.innerText = "Synchronisation...";
+        try {
+            await updateDoc(doc(db, "users", currentUser.uid), data);
+            btn.innerText = "Profil à jour !";
+            setTimeout(() => btn.innerText = "Mettre à jour mon profil", 2000);
+        } catch (e) { alert("Erreur synchro"); }
+    };
+</script>
 </body>
+
 </html>

@@ -5,8 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard | Workout Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="manifest" href="./manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Workout">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <meta name="theme-color" content="#007aff">
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('PWA prête !'))
+            .catch(err => console.log('Erreur PWA:', err));
+        });
+      }
+    </script>
+</head>
     <style>
         :root {
             --apple-bg: #f5f5f7;
@@ -373,7 +390,7 @@
             </a>
         </div>
     </div>
-    <a href="https://wa.me/32479694637" class="help-button" target="_blank">
+    <a href="https://wa.me/32" class="help-button" target="_blank">
         <span class="help-icon">💬</span>
         <span class="help-text">Besoin d'aide ?</span>
     </a>

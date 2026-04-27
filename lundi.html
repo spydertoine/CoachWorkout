@@ -242,11 +242,11 @@
         }
 
         .input-group.weight-group::after {
-            content: "kg";
+            content: "m";
         }
 
         .input-group.reps-group::after {
-            content: "reps";
+            content: "Long";
         }
 
         .perf-input {
@@ -294,6 +294,15 @@
                 font-size: 13px;
             }
         }
+
+        .input-group.distance-group::after {
+            content: "m";
+        }
+
+        .input-group.long-group::after {
+            content: "long";
+            font-size: 11px;
+        }
     </style>
 </head>
 
@@ -329,123 +338,129 @@
         <form id="workoutForm">
             <div class="ex-card">
                 <div class="ex-title">
-                    <h3>Echauffement Crwal</h3>
-                    <p>10 Longueurs / 20m</p>
+                    <h3>Echauffement Crawl</h3>
+                    <p>Objectif : Distance et technique</p>
                 </div>
                 <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex1_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex1_reps" class="perf-input" placeholder="0">
                     </div>
                 </div>
             </div>
+
             <div class="ex-card">
                 <div class="ex-title">
                     <h3>3 Nages</h3>
-                    <p>10 Longueurs / 20m</p>
+                    <p>Alternance des styles</p>
                 </div>
                 <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex2_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex2_reps" class="perf-input" placeholder="0">
                     </div>
                 </div>
             </div>
+
             <div class="ex-card">
                 <div class="ex-title">
-                    <h3>Sprint aller / Retour brasse</h3>
-                    <p>10 Longueurs / 20m</p>
+                    <h3>Sprint Brasse</h3>
+                    <p>Vitesse maximum</p>
                 </div>
                 <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex3_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex3_reps" class="perf-input" placeholder="0">
                     </div>
                 </div>
             </div>
+
             <div class="ex-card">
                 <div class="ex-title">
-                    <h3>Crawl</h3>
-                    <p>10 Longueurs / 20m</p>
+                    <h3>Crawl Final</h3>
+                    <p>Endurance de fin de séance</p>
                 </div>
                 <div class="perf-grid">
-                    <div class="input-group"><input type="number" class="perf-input weight-input" placeholder="0"></div>
-                    <div class="input-group reps-group">
-                        <input type="number" class="perf-input reps-input" placeholder="0">
+                    <div class="input-group distance-group">
+                        <input type="number" id="ex4_poids" class="perf-input" placeholder="0">
+                    </div>
+                    <div class="input-group long-group">
+                        <input type="number" id="ex4_reps" class="perf-input" placeholder="0">
                     </div>
                 </div>
             </div>
 
             <button type="button" class="btn-finish">Enregistrer la séance</button>
         </form>
-    </div>
 
-    <script>
-        const circle = document.getElementById('timer-circle');
-        const display = document.getElementById('timer-display');
-        const btn = document.getElementById('btn-timer');
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+            import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+            import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const r = 44; // Rayon mis à jour pour la montre XL
-        const circumference = 2 * Math.PI * r;
+            const firebaseConfig = {
+                apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw",
+                authDomain: "coachworkout-65b99.firebaseapp.com",
+                projectId: "coachworkout-65b99",
+                storageBucket: "coachworkout-65b99.firebasestorage.app",
+                messagingSenderId: "78930491774",
+                appId: "1:78930491774:web:d480943e82efa2db451b2f"
+            };
 
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = 0;
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
 
-        let TIME_LIMIT = 90;
-        let secondsLeft = TIME_LIMIT;
-        let timerInterval = null;
+            let uid = null;
 
-        function updateDisplay() {
-            let m = Math.floor(secondsLeft / 60);
-            let s = secondsLeft % 60;
-            display.textContent = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
-        }
+            onAuthStateChanged(auth, (user) => {
+                if (user) { uid = user.uid; }
+                else { window.location.href = 'login.html'; }
+            });
 
-        function setProgress() {
-            const fraction = (TIME_LIMIT - secondsLeft) / TIME_LIMIT;
-            const offset = fraction * circumference;
-            circle.style.strokeDashoffset = offset;
-        }
+            // --- ICI TES FONCTIONS DE MONTRE EXISTANTES (toggleTimer, resetTimer) ---
+            // Ne rien changer à ton code de chronomètre ici.
 
-        function toggleTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-                btn.innerText = "Start";
-                btn.classList.remove('btn-pause');
-                btn.classList.add('btn-start');
-            } else {
-                btn.innerText = "Pause";
-                btn.classList.remove('btn-start');
-                btn.classList.add('btn-pause');
+            // --- ENREGISTREMENT ---
+            async function saveWorkout() {
+                if (!uid) return;
+                const btn = document.querySelector('.btn-finish');
+                btn.disabled = true;
+                btn.innerText = "Synchronisation...";
 
-                timerInterval = setInterval(() => {
-                    secondsLeft--;
-                    updateDisplay();
-                    setProgress();
-                    if (secondsLeft <= 0) {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                        btn.innerText = "Fin";
-                        if (window.navigator.vibrate) window.navigator.vibrate([200, 100, 200]);
-                    }
-                }, 1000);
+                const workoutData = {
+                    userId: uid,
+                    date: serverTimestamp(),
+                    jour: "Lundi",
+                    type: "Natation",
+                    exercices: [
+                        { nom: "Echauffement Crawl", poids: document.getElementById('ex1_poids')?.value || "0", reps: document.getElementById('ex1_reps')?.value || "0" },
+                        { nom: "3 Nages", poids: document.getElementById('ex2_poids')?.value || "0", reps: document.getElementById('ex2_reps')?.value || "0" },
+                        { nom: "Sprint Brasse", poids: document.getElementById('ex3_poids')?.value || "0", reps: document.getElementById('ex3_reps')?.value || "0" },
+                        { nom: "Crawl Final", poids: document.getElementById('ex4_poids')?.value || "0", reps: document.getElementById('ex4_reps')?.value || "0" }
+                    ]
+                };
+
+                try {
+                    await addDoc(collection(db, "workouts"), workoutData);
+                    btn.style.background = "#34c759";
+                    btn.innerText = "Séance enregistrée ! ✅";
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+                } catch (e) {
+                    alert("Erreur : " + e.message);
+                    btn.disabled = false;
+                    btn.innerText = "Enregistrer la séance";
+                }
             }
-        }
 
-        function resetTimer() {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            secondsLeft = TIME_LIMIT;
-            updateDisplay();
-            circle.style.strokeDashoffset = 0;
-            btn.innerText = "Start";
-            btn.classList.remove('btn-pause');
-            btn.classList.add('btn-start');
-        }
-
-        updateDisplay();
-    </script>
+            document.querySelector('.btn-finish').addEventListener('click', saveWorkout);
+        </script>
 </body>
 
 </html>
