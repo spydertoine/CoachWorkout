@@ -14,7 +14,6 @@
             --accent: #007aff;
             --watch-case: #0a0a0b;
             --watch-band: #2c2c2e;
-            --pause: #ff9f0a;
         }
 
         * {
@@ -29,13 +28,11 @@
             background-attachment: fixed;
             padding: 15px;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 650px;
-            /* Aligné sur la nouvelle largeur de la montre */
+            max-width: 500px;
             margin: 0 auto;
             padding-bottom: 120px;
         }
@@ -47,11 +44,10 @@
             color: var(--accent);
             font-weight: 600;
             font-size: 16px;
-            margin-bottom: 10px;
-            padding: 5px 0;
+            margin-bottom: 15px;
         }
 
-        /* --- LA MONTRE XL ULTRA-RÉALISTE --- */
+        /* --- LA MONTRE AVEC PROFONDEUR 3D --- */
         .watch-banner {
             position: sticky;
             top: 10px;
@@ -60,36 +56,78 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 650px;
-            /* Élargie pour s'aligner avec le bouton retour */
-            margin: 0 auto 40px auto;
-            height: 160px;
+            margin: 0 auto 30px auto;
+            height: auto;
+            min-height: 120px;
+        }
+
+        .watch-case {
+            width: 28vw;
+            height: 28vw;
+            max-width: 140px;
+            max-height: 140px;
+            min-width: 100px;
+            min-height: 100px;
+            border-radius: 22%;
+            flex-shrink: 0;
+            z-index: 2;
+            position: relative;
+            background: var(--watch-case);
+            border: 1.5px solid #3a3a3c;
+            /* PROFONDEUR ACCENTUÉE */
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                /* Ombre sous la montre */
+                inset 0 0 15px rgba(0, 0, 0, 0.9),
+                /* Écran enfoncé sous le verre */
+                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            /* Biseau poli sur le bord */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Reflet sur le verre */
+        .watch-case::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 4;
         }
 
         .band-left,
         .band-right {
-            height: 85px;
-            /* Épaissi pour le gros boîtier */
+            height: 18vw;
+            max-height: 85px;
+            min-height: 62px;
             background: var(--watch-band);
             flex: 1;
             position: relative;
             display: flex;
             align-items: center;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
             background: linear-gradient(to bottom, #3a3a3c 0%, #2c2c2e 50%, #1c1c1e 100%);
         }
 
         .band-left {
-            border-radius: 50px 0 0 50px;
+            border-radius: 40px 0 0 40px;
             justify-content: center;
-            border-right: 1px solid #1c1c1e;
+            border-right: 1px solid #000;
+            /* Ombre de jonction */
         }
 
         .band-right {
-            border-radius: 0 50px 50px 0;
+            border-radius: 0 40px 40px 0;
             justify-content: center;
-            border-left: 1px solid #1c1c1e;
-            gap: 10px;
+            gap: 8px;
+            border-left: 1px solid #000;
+            /* Ombre de jonction */
         }
 
         /* Texture Sport Band */
@@ -101,50 +139,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1.5px, transparent 1.5px);
-            background-size: 12px 12px;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1.2px, transparent 1.2px);
+            background-size: 10px 10px;
             pointer-events: none;
-        }
-
-        .watch-case {
-            width: 140px;
-            /* TAILLE XL */
-            height: 140px;
-            border-radius: 42px;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            position: relative;
-            background: var(--watch-case);
-            border: 2px solid #3a3a3c;
-            box-shadow:
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                inset 0 0 20px rgba(0, 0, 0, 0.8),
-                /* Jonction profonde */
-                inset 0 2px 5px rgba(255, 255, 255, 0.2);
-            /* Biseau poli */
-            overflow: hidden;
-        }
-
-        .watch-case::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-            border-radius: 42px;
-            pointer-events: none;
-            z-index: 4;
         }
 
         .timer-wrapper {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 85%;
+            height: 85%;
+            /* On force le centrage de tout ce qui est dedans */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -152,22 +156,33 @@
 
         #timer-display {
             color: white;
-            font-size: 26px;
+            /* On utilise clamp pour que ce soit beau sur iPhone et PC */
+            font-size: clamp(18px, 5vw, 26px);
             font-weight: 800;
+            /* POSITION ABSOLUE : C'est le secret pour être AU-DESSUS du cercle */
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 5;
+            text-shadow: 0 0 10px rgba(0, 122, 255, 0.6);
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            margin: 0;
         }
 
         .progress-ring {
             transform: rotate(-90deg);
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            height: 100%;
             filter: drop-shadow(0 0 5px var(--accent));
         }
 
-        #timer-circle {
+        .progress-ring {
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 0 4px var(--accent));
+        }
+
+        .progress-ring__circle {
             transition: stroke-dashoffset 1s linear;
             stroke-linecap: round;
         }
@@ -175,21 +190,16 @@
         .btn-watch {
             border: none;
             color: white;
-            height: 46px;
-            width: 85px;
-            border-radius: 23px;
+            height: 40px;
+            width: 75px;
+            border-radius: 20px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 10px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.2s ease;
-            background: linear-gradient(to bottom, #4a4a4c 0%, #2c2c2e 100%);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(0, 0, 0, 0.4);
-        }
-
-        .btn-watch:active {
-            transform: translateY(2px);
+            background: linear-gradient(to bottom, #4a4a4c, #2c2c2e);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.3);
         }
 
         .btn-start {
@@ -200,28 +210,14 @@
             background: linear-gradient(to bottom, #ffb347, #ff8c00);
         }
 
-        /* --- CARTES ET INPUTS --- */
+        /* --- INPUTS ET CARTES --- */
         .ex-card {
             background: var(--apple-card);
-            backdrop-filter: blur(25px);
             border-radius: 30px;
             padding: 25px;
             margin-bottom: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid white;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-        }
-
-        .ex-title h3 {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 5px;
-        }
-
-        .ex-title p {
-            color: #86868b;
-            font-size: 15px;
-            margin-bottom: 20px;
         }
 
         .perf-grid {
@@ -232,19 +228,25 @@
 
         .input-group {
             position: relative;
-            width: 100%;
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
         .input-group::after {
-            content: "m";
             position: absolute;
-            right: 18px;
+            right: 15px;
             font-weight: 700;
             color: #86868b;
-            font-size: 16px;
-            pointer-events: none;
+            font-size: 15px;
+        }
+
+        .input-group.weight-group::after {
+            content: "kg";
+        }
+
+        .input-group.reps-group::after {
+            content: "reps";
         }
 
         .perf-input {
@@ -257,22 +259,6 @@
             font-weight: 700;
             width: 100%;
             outline: none;
-        }
-
-        .perf-input.weight-input {
-            padding-right: 45px;
-        }
-
-        /* Suffixe pour les répétitions */
-        .input-group.reps-group::after {
-            content: "Longueurs";
-            right: 15px;
-            /* Un peu plus d'espace car le mot est plus long */
-        }
-
-        /* On s'assure que l'input laisse assez de place à droite */
-        .perf-input.reps-input {
-            padding-right: 55px;
         }
 
         .btn-finish {
@@ -289,6 +275,24 @@
             border-radius: 25px;
             font-weight: 800;
             font-size: 19px;
+        }
+
+        /* --- AJUSTEMENT PC --- */
+        @media (min-width: 850px) {
+            .container {
+                max-width: 800px;
+            }
+
+            .watch-banner {
+                max-width: 650px;
+                height: 160px;
+            }
+
+            .btn-watch {
+                width: 100px;
+                height: 50px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
