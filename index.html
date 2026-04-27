@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard | Workout Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
 
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,292 +14,285 @@
     <meta name="apple-mobile-web-app-title" content="Workout">
     <link rel="apple-touch-icon" href="./icon-192.jpg">
     <meta name="theme-color" content="#007aff">
+    <link rel="apple-touch-startup-image" href="./icon-512.jpg">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('PWA prête !'))
-            .catch(err => console.log('Erreur PWA:', err));
-        });
-      }
-    </script>
 </head>
-    <style>
-        :root {
-            --apple-bg: #f5f5f7;
-            --apple-card: rgba(255, 255, 255, 0.85);
-            --apple-text: #1d1d1f;
-            --apple-sub: #86868b;
-            --accent-blue: #007aff;
-            --rest-gray: #d2d2d7;
-            --apple-red: #ff3b30;
+<style>
+    :root {
+        --apple-bg: #f5f5f7;
+        --apple-card: rgba(255, 255, 255, 0.85);
+        --apple-text: #1d1d1f;
+        --apple-sub: #86868b;
+        --accent-blue: #007aff;
+        --rest-gray: #d2d2d7;
+        --apple-red: #ff3b30;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'SF Pro Display', -apple-system, sans-serif;
+        background: radial-gradient(circle at top right, #e2e2ff, transparent),
+            radial-gradient(circle at bottom left, #ffe2e2, transparent),
+            var(--apple-bg);
+        background-attachment: fixed;
+        color: var(--apple-text);
+        padding: 40px 20px;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    /* --- HEADER AVEC BOUTON DECO --- */
+    header {
+        margin-bottom: 40px;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .welcome-label {
+        color: var(--apple-sub);
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    h1 {
+        font-size: clamp(30px, 8vw, 42px);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+    }
+
+    .gradient-text {
+        background: linear-gradient(to right, #5e5ce6, #ff2d55, #ff9f0a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* BOUTON LOGOUT STYLE APPLE */
+    .logout-pill {
+        background: rgba(255, 59, 48, 0.1);
+        color: var(--apple-red);
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .logout-pill:active {
+        transform: scale(0.95);
+        background: rgba(255, 59, 48, 0.2);
+    }
+
+    /* --- SUIVI BAR --- */
+    .suivi-bar {
+        background: var(--apple-card);
+        backdrop-filter: blur(30px);
+        margin-bottom: 30px;
+        padding: 22px;
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s ease;
+    }
+
+    .suivi-bar:active {
+        transform: scale(0.98);
+    }
+
+    /* --- GRID DES JOURS --- */
+    .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .workout-card {
+        text-decoration: none;
+        color: inherit;
+        background: var(--apple-card);
+        border-radius: 32px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 200px;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 1px 2px white;
+        background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%, rgba(0, 0, 0, 0.02) 100%);
+    }
+
+    .workout-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        background: linear-gradient(to bottom, #008aff, #005bb5);
+        box-shadow: 0 5px 12px rgba(0, 122, 255, 0.3);
+    }
+
+    .btn-start {
+        margin-top: 20px;
+        background: #f2f2f7;
+        color: var(--accent-blue);
+        padding: 12px;
+        border-radius: 14px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    /* JOUR DE REPOS */
+    .rest-day {
+        pointer-events: none;
+        opacity: 0.7;
+        background: rgba(0, 0, 0, 0.04) !important;
+        box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .rest-day .icon-circle {
+        background: var(--rest-gray) !important;
+        box-shadow: none;
+    }
+
+    .rest-day .btn-start {
+        background: transparent;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        color: var(--apple-sub);
+    }
+
+    /* AUJOURD'HUI */
+    @keyframes soft-pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        50% {
+            transform: scale(1.02);
+        }
+    }
+
+    .card-today {
+        border: 2px solid var(--accent-blue) !important;
+        animation: soft-pulse 4s infinite;
+    }
+
+    .badge-today {
+        position: absolute;
+        top: -12px;
+        left: 25px;
+        background: var(--accent-blue);
+        color: white;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 5px 14px;
+        border-radius: 20px;
+    }
+
+    .help-button {
+        position: fixed;
+        bottom: 30px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        background: rgba(37, 211, 102, 0.9);
+        /* Vert WhatsApp avec légère transparence */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 14px;
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+        z-index: 9999;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .help-button:hover {
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
+    }
+
+    .help-button:active {
+        transform: scale(0.95);
+    }
+
+    .help-icon {
+        font-size: 18px;
+    }
+
+    /* Animation pour attirer l'oeil doucement au chargement */
+    @keyframes slideIn {
+        from {
+            transform: translateX(100px);
+            opacity: 0;
         }
 
-        body {
-            font-family: 'SF Pro Display', -apple-system, sans-serif;
-            background: radial-gradient(circle at top right, #e2e2ff, transparent),
-                radial-gradient(circle at bottom left, #ffe2e2, transparent),
-                var(--apple-bg);
-            background-attachment: fixed;
-            color: var(--apple-text);
-            padding: 40px 20px;
-            -webkit-font-smoothing: antialiased;
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .help-button {
+        animation: slideIn 1s ease-out forwards;
+    }
+
+    /* Sur mobile très petit, on peut masquer le texte pour ne garder que l'icône */
+    @media (max-width: 380px) {
+        .help-text {
+            display: none;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        /* --- HEADER AVEC BOUTON DECO --- */
-        header {
-            margin-bottom: 40px;
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .welcome-label {
-            color: var(--apple-sub);
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        h1 {
-            font-size: clamp(30px, 8vw, 42px);
-            font-weight: 800;
-            letter-spacing: -1.5px;
-        }
-
-        .gradient-text {
-            background: linear-gradient(to right, #5e5ce6, #ff2d55, #ff9f0a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* BOUTON LOGOUT STYLE APPLE */
-        .logout-pill {
-            background: rgba(255, 59, 48, 0.1);
-            color: var(--apple-red);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .logout-pill:active {
-            transform: scale(0.95);
-            background: rgba(255, 59, 48, 0.2);
-        }
-
-        /* --- SUIVI BAR --- */
-        .suivi-bar {
-            background: var(--apple-card);
-            backdrop-filter: blur(30px);
-            margin-bottom: 30px;
-            padding: 22px;
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-            transition: transform 0.2s ease;
-        }
-
-        .suivi-bar:active {
-            transform: scale(0.98);
-        }
-
-        /* --- GRID DES JOURS --- */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .workout-card {
-            text-decoration: none;
-            color: inherit;
-            background: var(--apple-card);
-            border-radius: 32px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 200px;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 1px 2px white;
-            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%, rgba(0, 0, 0, 0.02) 100%);
-        }
-
-        .workout-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
-        }
-
-        .icon-circle {
-            width: 48px;
-            height: 48px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            background: linear-gradient(to bottom, #008aff, #005bb5);
-            box-shadow: 0 5px 12px rgba(0, 122, 255, 0.3);
-        }
-
-        .btn-start {
-            margin-top: 20px;
-            background: #f2f2f7;
-            color: var(--accent-blue);
+        .help-button {
             padding: 12px;
-            border-radius: 14px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 13px;
+            border-radius: 50%;
         }
-
-        /* JOUR DE REPOS */
-        .rest-day {
-            pointer-events: none;
-            opacity: 0.7;
-            background: rgba(0, 0, 0, 0.04) !important;
-            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.05) !important;
-            border: 1px solid rgba(0, 0, 0, 0.05) !important;
-        }
-
-        .rest-day .icon-circle {
-            background: var(--rest-gray) !important;
-            box-shadow: none;
-        }
-
-        .rest-day .btn-start {
-            background: transparent;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            color: var(--apple-sub);
-        }
-
-        /* AUJOURD'HUI */
-        @keyframes soft-pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.02);
-            }
-        }
-
-        .card-today {
-            border: 2px solid var(--accent-blue) !important;
-            animation: soft-pulse 4s infinite;
-        }
-
-        .badge-today {
-            position: absolute;
-            top: -12px;
-            left: 25px;
-            background: var(--accent-blue);
-            color: white;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 5px 14px;
-            border-radius: 20px;
-        }
-
-        .help-button {
-            position: fixed;
-            bottom: 30px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            background: rgba(37, 211, 102, 0.9);
-            /* Vert WhatsApp avec légère transparence */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
-            z-index: 9999;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .help-button:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
-        }
-
-        .help-button:active {
-            transform: scale(0.95);
-        }
-
-        .help-icon {
-            font-size: 18px;
-        }
-
-        /* Animation pour attirer l'oeil doucement au chargement */
-        @keyframes slideIn {
-            from {
-                transform: translateX(100px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .help-button {
-            animation: slideIn 1s ease-out forwards;
-        }
-
-        /* Sur mobile très petit, on peut masquer le texte pour ne garder que l'icône */
-        @media (max-width: 380px) {
-            .help-text {
-                display: none;
-            }
-
-            .help-button {
-                padding: 12px;
-                border-radius: 50%;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>

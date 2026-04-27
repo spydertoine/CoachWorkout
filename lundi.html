@@ -400,10 +400,12 @@
         </form>
 
         <script type="module">
+            // 1. IMPORTATIONS
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
             import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
             import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+            // 2. CONFIGURATION FIREBASE
             const firebaseConfig = {
                 apiKey: "AIzaSyDCZG_v85vVulpoWPBhtHqgWTwgQ4OqvFw",
                 authDomain: "coachworkout-65b99.firebaseapp.com",
@@ -424,10 +426,79 @@
                 else { window.location.href = 'login.html'; }
             });
 
-            // --- ICI TES FONCTIONS DE MONTRE EXISTANTES (toggleTimer, resetTimer) ---
-            // Ne rien changer à ton code de chronomètre ici.
+            // 3. LOGIQUE DE LA MONTRE FLUIDE
+            let timerInterval;
+            let timeLeft = 90;
+            let isRunning = false;
 
-            // --- ENREGISTREMENT ---
+            const timerDisplay = document.getElementById('timer-display');
+            const timerCircle = document.getElementById('timer-circle');
+            const btnTimer = document.getElementById('btn-timer');
+
+            const radius = 44;
+            const circumference = 2 * Math.PI * radius;
+
+            // Initialisation du cercle
+            timerCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+            timerCircle.style.strokeDashoffset = 0;
+
+            function updateDisplay(isReset = false) {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                // GESTION DE LA FLUIDITÉ
+                if (isReset) {
+                    // Animation rapide et fluide pour le reset
+                    timerCircle.style.transition = "stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+                } else if (isRunning) {
+                    // Transition linéaire seconde par seconde pendant le décompte
+                    timerCircle.style.transition = "stroke-dashoffset 1s linear";
+                } else {
+                    timerCircle.style.transition = "none";
+                }
+
+                const offset = circumference - (timeLeft / 90) * circumference;
+                timerCircle.style.strokeDashoffset = offset;
+            }
+
+            window.toggleTimer = function () {
+                if (isRunning) {
+                    clearInterval(timerInterval);
+                    btnTimer.innerText = "Start";
+                    btnTimer.classList.replace('btn-pause', 'btn-start');
+                } else {
+                    // On enlève la transition de reset avant de démarrer
+                    timerCircle.style.transition = "stroke-dashoffset 1s linear";
+                    timerInterval = setInterval(() => {
+                        timeLeft--;
+                        updateDisplay();
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            resetTimer();
+                        }
+                    }, 1000);
+                    btnTimer.innerText = "Pause";
+                    btnTimer.classList.replace('btn-start', 'btn-pause');
+                }
+                isRunning = !isRunning;
+            };
+
+            window.resetTimer = function () {
+                clearInterval(timerInterval);
+                timeLeft = 90;
+                isRunning = false;
+                btnTimer.innerText = "Start";
+                btnTimer.classList.remove('btn-pause');
+                btnTimer.classList.add('btn-start');
+
+                // On appelle l'update avec l'argument "isReset" à true
+                updateDisplay(true);
+            };
+
+            updateDisplay();
+
+            // 4. ENREGISTREMENT SÉANCE
             async function saveWorkout() {
                 if (!uid) return;
                 const btn = document.querySelector('.btn-finish');
@@ -440,10 +511,10 @@
                     jour: "Lundi",
                     type: "Natation",
                     exercices: [
-                        { nom: "Echauffement Crawl", poids: document.getElementById('ex1_poids')?.value || "0", reps: document.getElementById('ex1_reps')?.value || "0" },
-                        { nom: "3 Nages", poids: document.getElementById('ex2_poids')?.value || "0", reps: document.getElementById('ex2_reps')?.value || "0" },
-                        { nom: "Sprint Brasse", poids: document.getElementById('ex3_poids')?.value || "0", reps: document.getElementById('ex3_reps')?.value || "0" },
-                        { nom: "Crawl Final", poids: document.getElementById('ex4_poids')?.value || "0", reps: document.getElementById('ex4_reps')?.value || "0" }
+                        { nom: "Echauffement Crawl", poids: document.getElementById('ex1_poids').value || "0", reps: document.getElementById('ex1_reps').value || "0" },
+                        { nom: "3 Nages", poids: document.getElementById('ex2_poids').value || "0", reps: document.getElementById('ex2_reps').value || "0" },
+                        { nom: "Sprint Brasse", poids: document.getElementById('ex3_poids').value || "0", reps: document.getElementById('ex3_reps').value || "0" },
+                        { nom: "Crawl Final", poids: document.getElementById('ex4_poids').value || "0", reps: document.getElementById('ex4_reps').value || "0" }
                     ]
                 };
 
@@ -453,7 +524,7 @@
                     btn.innerText = "Séance enregistrée ! ✅";
                     setTimeout(() => { window.location.href = 'index.html'; }, 1500);
                 } catch (e) {
-                    alert("Erreur : " + e.message);
+                    alert("Erreur");
                     btn.disabled = false;
                     btn.innerText = "Enregistrer la séance";
                 }
