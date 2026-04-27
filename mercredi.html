@@ -362,7 +362,7 @@
             </div>
 
             <div class="ex-card">
-                <h3>Sprint Brasse</h3>
+                <h3>Sprint Aller / Brasse Retour</h3>
                 <div class="perf-grid">
                     <div class="input-group distance-group"><input type="number" id="ex3_poids" class="perf-input"
                             placeholder="0"></div>
@@ -372,7 +372,7 @@
             </div>
 
             <div class="ex-card">
-                <h3>Crawl Final</h3>
+                <h3>Crawl</h3>
                 <div class="perf-grid">
                     <div class="input-group distance-group"><input type="number" id="ex4_poids" class="perf-input"
                             placeholder="0"></div>
@@ -417,7 +417,7 @@
             </div>
 
             <div class="ex-card">
-                <h3>Gainage / Abdos</h3>
+                <h3>Crunch / Russian Twist</h3>
                 <div class="perf-grid">
                     <div class="input-group weight-group"><input type="number" id="ex8_poids" class="perf-input"
                             placeholder="0"></div>
@@ -532,19 +532,18 @@
                     userId: uid,
                     date: serverTimestamp(),
                     jour: "Mercredi",
-                    type: "Mixte",
+                    type: "Natation / Renfo Musuclaire",
                     exercices: [
                         // PARTIE NATATION (Meters & Longs auto)
-                        { nom: "Natation - Crawl Echauffement", poids: document.getElementById('ex1_poids').value || "0", reps: document.getElementById('ex1_reps').value || "0" },
-                        { nom: "Natation - 3 Nages", poids: document.getElementById('ex2_poids').value || "0", reps: document.getElementById('ex2_reps').value || "0" },
-                        { nom: "Natation - Sprint Brasse", poids: document.getElementById('ex3_poids').value || "0", reps: document.getElementById('ex3_reps').value || "0" },
-                        { nom: "Natation - Crawl Final", poids: document.getElementById('ex4_poids').value || "0", reps: document.getElementById('ex4_reps').value || "0" },
-
+                        { nom: "Crawl Echauffement", poids: document.getElementById('ex1_poids').value || "0", reps: document.getElementById('ex1_reps').value || "0" },
+                        { nom: "3 Nages", poids: document.getElementById('ex2_poids').value || "0", reps: document.getElementById('ex2_reps').value || "0" },
+                        { nom: "Sprint Aller / Brasse Retour", poids: document.getElementById('ex3_poids').value || "0", reps: document.getElementById('ex3_reps').value || "0" },
+                        { nom: "Crawl", poids: document.getElementById('ex4_poids').value || "0", reps: document.getElementById('ex4_reps').value || "0" },
                         // PARTIE MUSCULATION (Kg & Reps auto car pas de mot "Natation")
-                        { nom: "Développé Couché", poids: document.getElementById('ex5_poids').value || "0", reps: document.getElementById('ex5_reps').value || "0" },
-                        { nom: "Squat", poids: document.getElementById('ex6_poids').value || "0", reps: document.getElementById('ex6_reps').value || "0" },
+                        { nom: "Pull up", poids: document.getElementById('ex5_poids').value || "0", reps: document.getElementById('ex5_reps').value || "0" },
+                        { nom: "Lateral raise", poids: document.getElementById('ex6_poids').value || "0", reps: document.getElementById('ex6_reps').value || "0" },
                         { nom: "Tractions", poids: document.getElementById('ex7_poids').value || "0", reps: document.getElementById('ex7_reps').value || "0" },
-                        { nom: "Gainage / Abdos", poids: document.getElementById('ex8_poids').value || "0", reps: document.getElementById('ex8_reps').value || "0" }
+                        { nom: "Crunch / Russian Twist", poids: document.getElementById('ex8_poids').value || "0", reps: document.getElementById('ex8_reps').value || "0" }
                     ]
                 };
 

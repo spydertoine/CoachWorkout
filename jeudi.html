@@ -334,12 +334,14 @@
             <p style="font-weight:700; font-size:14px; color:#86868b; text-transform:uppercase;">Lundi</p>
             <h1 style="font-size:36px; font-weight:800; letter-spacing: -1.5px;">Natation</h1>
         </header>
-
+        <div
+            style="margin: 30px 0 15px 5px; font-size: 22px; font-weight: 800; color: #1d1d1f; border-left: 4px solid var(--accent); padding-left: 15px;">
+            Natation
+        </div>
         <form id="workoutForm">
             <div class="ex-card">
                 <div class="ex-title">
                     <h3>Crwal EF 30min</h3>
-                    <p>Objectif : Le plus de longueurs possibles</p>
                 </div>
                 <div class="perf-grid">
                     <div class="input-group distance-group">
@@ -465,13 +467,10 @@
                 const workoutData = {
                     userId: uid,
                     date: serverTimestamp(),
-                    jour: "Lundi",
+                    jour: "Jeudi",
                     type: "Natation",
                     exercices: [
-                        { nom: "Echauffement Crawl", poids: document.getElementById('ex1_poids').value || "0", reps: document.getElementById('ex1_reps').value || "0" },
-                        { nom: "3 Nages", poids: document.getElementById('ex2_poids').value || "0", reps: document.getElementById('ex2_reps').value || "0" },
-                        { nom: "Sprint Brasse", poids: document.getElementById('ex3_poids').value || "0", reps: document.getElementById('ex3_reps').value || "0" },
-                        { nom: "Crawl Final", poids: document.getElementById('ex4_poids').value || "0", reps: document.getElementById('ex4_reps').value || "0" }
+                        { nom: "Crwal EF 30min", poids: document.getElementById('ex1_poids').value || "0", reps: document.getElementById('ex1_reps').value || "0" },
                     ]
                 };
 
